@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nepal_express/app/components/bus_card.dart';
+import 'package:nepal_express/app/components/city_card.dart';
 import 'package:nepal_express/app/models/bus.dart';
 import 'package:nepal_express/app/modules/home/views/pokhara.dart';
 import 'package:nepal_express/app/utils/constants.dart';
@@ -11,6 +12,10 @@ import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
+  void handleCityCardTap() {
+    Get.to(() => const Pokhara());
+  }
+
   @override
   Widget build(BuildContext context) {
     Get.put(HomeController());
@@ -137,601 +142,77 @@ class HomeView extends GetView<HomeController> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 400,
-                                width: 200,
-                                margin:
-                                    const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/pokhara.png'),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(1),
-                                      spreadRadius: 5,
-                                      blurRadius: 5,
-                                      offset: const Offset(5, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: InkWell(
-                                    child: Container(
-                                        // color: Colors.grey.withOpacity(0.5),
-                                        height: 50,
-                                        width: 170,
-                                        margin: EdgeInsets.only(bottom: 20),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          gradient: const LinearGradient(
-                                            begin: Alignment.topRight,
-                                            end: Alignment.bottomLeft,
-                                            colors: [
-                                              Color.fromARGB(255, 74, 91, 125),
-                                              Color.fromARGB(255, 33, 39, 54),
-                                            ],
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Color.fromARGB(
-                                                      255, 48, 51, 59)
-                                                  .withOpacity(0.7),
-                                              spreadRadius: 3,
-                                              blurRadius: 3,
-                                              offset: const Offset(3, 2),
-                                            ),
-                                          ],
-                                        ),
-                                        // width: MediaQuery.of(context).size.width,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              'Pokhara',
-                                              style: GoogleFonts.arsenal(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Text(
-                                              'Gandaki',
-                                              style: GoogleFonts.arsenal(
-                                                fontSize: 15,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        )),
-                                    onTap: () {
-                                      Get.to(() => const Pokhara());
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
+                          InkWell(
+                            child: const CityCard(
+                              image: 'assets/images/pokhara.png',
+                              text: 'Pokhara',
+                              text2: 'Gandaki',
+                            ),
+                            onTap: () {
+                              Get.to(() => const Pokhara());
+                            },
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 400,
-                                width: 200,
-                                margin:
-                                    const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                      image:
-                                          AssetImage('assets/images/ktm.png'),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(1),
-                                      spreadRadius: 5,
-                                      blurRadius: 5,
-                                      offset: const Offset(5, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: InkWell(
-                                    child: Container(
-                                      // color: Colors.grey.withOpacity(0.5),
-                                      height: 50,
-                                      width: 170,
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        gradient: const LinearGradient(
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft,
-                                          colors: [
-                                            Color.fromARGB(255, 74, 91, 125),
-                                            Color.fromARGB(255, 33, 39, 54),
-                                          ],
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Color.fromARGB(255, 48, 51, 59)
-                                                    .withOpacity(0.7),
-                                            spreadRadius: 3,
-                                            blurRadius: 3,
-                                            offset: const Offset(3, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      // width: MediaQuery.of(context).size.width,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Kathmandu',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Bagmati',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      Get.to(() => const Pokhara());
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
+                          InkWell(
+                            child: const CityCard(
+                              image: 'assets/images/ktm.png',
+                              text: 'Kathmandu',
+                              text2: 'Bagmati',
+                            ),
+                            onTap: () {
+                              Get.to(() => const Pokhara());
+                            },
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 400,
-                                width: 200,
-                                margin:
-                                    const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/dharan.png'),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(1),
-                                      spreadRadius: 5,
-                                      blurRadius: 5,
-                                      offset: const Offset(5, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: InkWell(
-                                    child: Container(
-                                      // color: Colors.grey.withOpacity(0.5),
-                                      height: 50,
-                                      width: 170,
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        gradient: const LinearGradient(
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft,
-                                          colors: [
-                                            Color.fromARGB(255, 74, 91, 125),
-                                            Color.fromARGB(255, 33, 39, 54),
-                                          ],
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Color.fromARGB(255, 48, 51, 59)
-                                                    .withOpacity(0.7),
-                                            spreadRadius: 3,
-                                            blurRadius: 3,
-                                            offset: const Offset(3, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      // width: MediaQuery.of(context).size.width,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Dharan',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Koshi',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      Get.to(() => const Pokhara());
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
+                          InkWell(
+                            child: const CityCard(
+                              image: 'assets/images/dharan.png',
+                              text: 'Dharan',
+                              text2: 'Koshi',
+                            ),
+                            onTap: () {
+                              Get.to(() => const Pokhara());
+                            },
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 400,
-                                width: 200,
-                                margin:
-                                    const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/chitwan.png'),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(1),
-                                      spreadRadius: 5,
-                                      blurRadius: 5,
-                                      offset: const Offset(5, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: InkWell(
-                                    child: Container(
-                                      // color: Colors.grey.withOpacity(0.5),
-                                      height: 50,
-                                      width: 170,
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        gradient: const LinearGradient(
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft,
-                                          colors: [
-                                            Color.fromARGB(255, 74, 91, 125),
-                                            Color.fromARGB(255, 33, 39, 54),
-                                          ],
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Color.fromARGB(255, 48, 51, 59)
-                                                    .withOpacity(0.7),
-                                            spreadRadius: 3,
-                                            blurRadius: 3,
-                                            offset: const Offset(3, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      // width: MediaQuery.of(context).size.width,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Chitwan',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Bagmati',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      Get.to(() => const Pokhara());
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
+                          InkWell(
+                            child: const CityCard(
+                              image: 'assets/images/chitwan.png',
+                              text: 'Chitwan',
+                              text2: 'Bagmati',
+                            ),
+                            onTap: () {
+                              Get.to(() => const Pokhara());
+                            },
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 400,
-                                width: 200,
-                                margin:
-                                    const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/butwal.png'),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(1),
-                                      spreadRadius: 5,
-                                      blurRadius: 5,
-                                      offset: const Offset(5, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: InkWell(
-                                    child: Container(
-                                      // color: Colors.grey.withOpacity(0.5),
-                                      height: 50,
-                                      width: 170,
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        gradient: const LinearGradient(
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft,
-                                          colors: [
-                                            Color.fromARGB(255, 74, 91, 125),
-                                            Color.fromARGB(255, 33, 39, 54),
-                                          ],
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Color.fromARGB(255, 48, 51, 59)
-                                                    .withOpacity(0.7),
-                                            spreadRadius: 3,
-                                            blurRadius: 3,
-                                            offset: const Offset(3, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      // width: MediaQuery.of(context).size.width,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Butwal',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Lumbini',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      Get.to(() => const Pokhara());
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
+                          InkWell(
+                            child: const CityCard(
+                              image: 'assets/images/butwal.png',
+                              text: 'Butwal',
+                              text2: 'Lumbini',
+                            ),
+                            onTap: () {
+                              Get.to(() => const Pokhara());
+                            },
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 400,
-                                width: 200,
-                                margin:
-                                    const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/birgunj.png'),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(1),
-                                      spreadRadius: 5,
-                                      blurRadius: 5,
-                                      offset: const Offset(5, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: InkWell(
-                                    child: Container(
-                                      // color: Colors.grey.withOpacity(0.5),
-                                      height: 50,
-                                      width: 170,
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        gradient: const LinearGradient(
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft,
-                                          colors: [
-                                            Color.fromARGB(255, 74, 91, 125),
-                                            Color.fromARGB(255, 33, 39, 54),
-                                          ],
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Color.fromARGB(255, 48, 51, 59)
-                                                    .withOpacity(0.7),
-                                            spreadRadius: 3,
-                                            blurRadius: 3,
-                                            offset: const Offset(3, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      // width: MediaQuery.of(context).size.width,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Birgunj',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Madhesh',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () {
-                                      Get.to(() => const Pokhara());
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
+                          InkWell(
+                            child: const CityCard(
+                              image: 'assets/images/birgunj.png',
+                              text: 'Birgunj',
+                              text2: 'Madhesh',
+                            ),
+                            onTap: () {
+                              Get.to(() => const Pokhara());
+                            },
                           ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                height: 400,
-                                width: 200,
-                                margin:
-                                    const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                decoration: BoxDecoration(
-                                  image: const DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/butwal.png'),
-                                      fit: BoxFit.cover),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(1),
-                                      spreadRadius: 5,
-                                      blurRadius: 5,
-                                      offset: const Offset(5, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: InkWell(
-                                    child: Container(
-                                      // color: Colors.grey.withOpacity(0.5),
-                                      height: 50,
-                                      width: 170,
-                                      margin: EdgeInsets.only(bottom: 20),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        gradient: const LinearGradient(
-                                          begin: Alignment.topRight,
-                                          end: Alignment.bottomLeft,
-                                          colors: [
-                                            Color.fromARGB(255, 74, 91, 125),
-                                            Color.fromARGB(255, 33, 39, 54),
-                                          ],
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Color.fromARGB(255, 48, 51, 59)
-                                                    .withOpacity(0.7),
-                                            spreadRadius: 3,
-                                            blurRadius: 3,
-                                            offset: const Offset(3, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      // width: MediaQuery.of(context).size.width,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            'Biratnagar',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          Text(
-                                            'Koshi',
-                                            style: GoogleFonts.arsenal(
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    onTap: () {
-                                    Get.to(() => const Pokhara());
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
+                          InkWell(
+                            child: const CityCard(
+                              image: 'assets/images/biratnagar.png',
+                              text: 'Biratnagar',
+                              text2: 'Madhesh',
+                            ),
+                            onTap: () {
+                              Get.to(() => const Pokhara());
+                            },
                           ),
+                          
                         ],
                       ),
                     ),
@@ -744,6 +225,11 @@ class HomeView extends GetView<HomeController> {
       ),
     );
   }
+}
+
+void handleCityCardTap() {
+  // Your logic for when CityCard is tapped
+  print('CityCard tapped!');
 }
 
 class SearchView extends SearchDelegate {
