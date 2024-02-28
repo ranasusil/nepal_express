@@ -9,7 +9,7 @@ class Pokhara extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Pokhara'),
+          title: const Text('Pokhara'),
           centerTitle: true,
           leading: const BackButton(
             color: Colors.white,
@@ -18,7 +18,7 @@ class Pokhara extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Center(
+              const Center(
                 child: Image(image: AssetImage('assets/images/pokhara2.jpg'),
                 width: double.infinity,
                 fit: BoxFit.cover,),
@@ -37,8 +37,7 @@ class Pokhara extends StatelessWidget {
                 ),
               ),
               Container(
-                height: 30,
-                
+                height: 30,        
                 child: Center(
                   child: Text(
                     "Nature's Haven in Nepal",
@@ -52,13 +51,13 @@ class Pokhara extends StatelessWidget {
               ),
               Container(
                 height: 500,
-                margin: EdgeInsets.all(20),
+                margin: const EdgeInsets.all(20),
                   child: Text(
                     'Pokhara Valley, situated in the western part of Nepal, is a picturesque and enchanting destination that draws visitors with its natural beauty and serene surroundings. Nestled within the Annapurna mountain range, Pokhara is often referred to as the "City of Lakes" due to its numerous freshwater lakes, the most prominent being Phewa Lake.',
                     textAlign: TextAlign.justify,
                     style: GoogleFonts.crimsonText(
                       fontSize: 25,
-                      color: Color.fromARGB(255, 0, 0, 0),
+                      color:const Color.fromARGB(255, 0, 0, 0),
                     ),
                   ),
                 
