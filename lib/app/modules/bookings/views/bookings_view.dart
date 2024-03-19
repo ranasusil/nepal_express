@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:nepal_express/app/models/booking.dart';
+import 'package:nepal_express/app/utils/constants.dart';
 import 'package:nepal_express/app/utils/memory.dart';
 import 'package:get/get.dart';
 import 'package:nepal_express/app/routes/app_pages.dart';
@@ -8,56 +11,74 @@ class BookingsView extends GetView<BookingsController> {
   const BookingsView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    Get.put(BookingsController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('BookingsView'),
         centerTitle: true,
       ),
-      body: Center(
-        child: 
-        Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    tileColor: Colors.grey[300],
-                    leading: const Text('Logout',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        )),
-                    trailing: const Icon(Icons.logout),
-                    onTap: () {
-                      // Memory.clear();
-                      // Get.offAllNamed(Routes.LOGIN);
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Logout'),
-                            backgroundColor:const  Color.fromARGB(255, 181, 202, 220),
-                            content:
-                                const Text('Are you sure you want to logout?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Memory.clear();
-                                  Get.offAllNamed(Routes.LOGIN);
-                                },
-                                child: const Text('Yes'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                child: const Text('No'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
+      body: GetBuilder<BookingsController>(
+          builder: (controller) {
+            if (controller.bookingResponse == null) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            return ListView.builder(
+              itemCount:
+                  controller.bookingResponse?.bookings?.length ?? 0,
+              itemBuilder: (context, index) {
+                Booking booking =
+                    controller.bookingResponse!.bookings![index];
+                var formattedDate =
+                    DateFormat("yyyy-MM-dd hh:MM aa").format(booking.date!);
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 0.5,
+                    ),
                   ),
-                )
-      ),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 15,
+                    vertical: 10,
+                  ),
+                  child: ListTile(
+                    leading: Image.network(
+                      getImageUrl(booking.avatar),
+                      height: 200,
+                      width: 50,
+                      fit: BoxFit.cover,
+                    ),
+                    isThreeLine: true,
+                    title: Text(booking.name ?? ''),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(formattedDate),
+                        Text('Rs.${booking.amount}',
+                            style: const  TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            )),
+                      ],
+                    ),
+                    trailing: Text(
+                      booking.status?.toUpperCase() ?? '',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: booking.status == 'paid'
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        )
     );
   }
 }

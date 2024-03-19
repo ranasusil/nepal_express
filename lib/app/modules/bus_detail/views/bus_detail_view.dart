@@ -6,12 +6,20 @@ import 'package:get/get.dart';
 import 'package:nepal_express/app/models/bus.dart';
 import '../controllers/bus_detail_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nepal_express/app/models/seat.dart';
 
 class BusDetailView extends GetView<BusDetailController> {
   const BusDetailView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     var bus = Get.arguments as Bus?;
+    // Get the token from Memory
+    String token = Memory.getToken() ?? '';
+
+    // Call getSeatsForBus with token and bus ID
+    controller.getSeatsForBus(bus?.id ?? '', token);
+
     return Scaffold(
         appBar: AppBar(
           title: Text(bus?.name ?? ''),
@@ -178,18 +186,37 @@ class BusDetailView extends GetView<BusDetailController> {
                     ),
                     shadowColor: Colors.black, // Color of the shadow
                   ),
-                  // style: ElevatedButton.styleFrom(
-                  //   backgroundColor: const Color.fromARGB(188, 87, 126, 147),
-                  //   padding: const EdgeInsets.symmetric(
-                  //     vertical: 20,
-                  //   ),
-                  // ),
                   onPressed: () {
-                    Get.to(() => MakeAppointmentPage(bus: bus!),
-                        arguments: bus);
+                    Get.to(() => MakeBookingPage(bus: bus!), arguments: bus);
                   },
                   child: Text(
                     'Book the Vehicle',
+                    style: GoogleFonts.arsenal(
+                      fontSize: 22,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 30,
+              ),
+              Expanded(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(188, 87, 126, 147),
+                    elevation: 20,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    shadowColor: Colors.black,
+                  ),
+                  onPressed: () {
+                    controller.navigateToMakeSeatBookingPage();
+                  },
+                  child: Text(
+                    'Book the Seats',
                     style: GoogleFonts.arsenal(
                       fontSize: 22,
                       color: Colors.white,
@@ -203,9 +230,9 @@ class BusDetailView extends GetView<BusDetailController> {
   }
 }
 
-class MakeAppointmentPage extends StatelessWidget {
+class MakeBookingPage extends StatelessWidget {
   final Bus bus;
-  const MakeAppointmentPage({super.key, required this.bus});
+  const MakeBookingPage({super.key, required this.bus});
 
   @override
   Widget build(BuildContext context) {
@@ -366,5 +393,69 @@ class MakeAppointmentPage extends StatelessWidget {
             ],
           ),
         ));
+  }
+}
+
+class MakeSeatBookingPage extends StatelessWidget {
+  final List<String> seatNumbers;
+   final List<Seat> seats;
+  MakeSeatBookingPage({required this.seatNumbers, required this.seats});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Seat Booking Page'),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Seats for the bus.',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                crossAxisSpacing: 8.0,
+                mainAxisSpacing: 8.0,
+              ),
+              itemCount: seatNumbers.length,
+              itemBuilder: (context, index) {
+                Seat seat = seats[index];
+                Color containerColor = seat.availability == 0
+                    ? Colors.red
+                    : Color.fromARGB(255, 6, 170, 0);
+                return Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                       color: seat.availability == 0 ? Colors.red : Colors.lightGreen,
+    border: Border.all(),
+    borderRadius: BorderRadius.circular(8.0),
+                    
+                    ),
+                    child: Center(
+                      child: Text(
+                        seatNumbers[index],
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

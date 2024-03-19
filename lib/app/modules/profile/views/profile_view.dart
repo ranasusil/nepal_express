@@ -9,6 +9,7 @@ class ProfileView extends GetView<ProfileController> {
   const ProfileView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    Get.put(ProfileController());
     return Scaffold(
       appBar: AppBar(
         title: const Text('ProfileView'),
@@ -40,23 +41,23 @@ class ProfileView extends GetView<ProfileController> {
                 const SizedBox(
                   height: 20,
                 ),
-                // Text(
-                //   controller.userResponse?.user?.fullName ?? '',
-                //   style: const TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w600,
-                //   ),
-                // ),
-                // const SizedBox(
-                //   height: 20,
-                // ),
-                // Text(
-                //   controller.userResponse!.user!.email!,
-                //   style: const TextStyle(
-                //     fontSize: 20,
-                //     fontWeight: FontWeight.w600,
-                //   ),
-                // ),
+                Text(
+                  controller.userResponse?.user?.fullName ?? '',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  controller.userResponse!.user!.email!,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),

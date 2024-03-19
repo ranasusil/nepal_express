@@ -1,4 +1,5 @@
 import 'package:nepal_express/app/models/bus.dart';
+
 import 'package:nepal_express/app/routes/app_pages.dart';
 import 'package:nepal_express/app/utils/constants.dart';
 import 'package:nepal_express/app/utils/memory.dart';
@@ -42,45 +43,50 @@ class BusCard extends StatelessWidget {
             width: 10,
           ),
           Expanded(
+            child: SingleChildScrollView(
               child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 20,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(bus.name ?? '',
-                    style:
-                        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                Text(bus.title ?? '', style: const TextStyle(fontSize: 16)),
-                Text(bus.agencyName ?? '', style: const TextStyle(fontSize: 16)),
-                Text(bus.agencyAddress ?? ''),
-                Text(bus.agencyEmail ?? ''),
-                Text(
-                  "Fair: Rs.${bus.fair}" ?? '',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 20,
                 ),
-                //view bus button
-                ElevatedButton(
-                  onPressed: () {
-                    Get.toNamed(Routes.BUS_DETAIL, arguments: bus);
-                  },
-                  child: Text('View Bus'),
-                  style: ElevatedButton.styleFrom(
-                    primary:
-                        Color.fromARGB(208, 92, 117, 143), // background color
-                    onPrimary:
-                        const Color.fromARGB(255, 255, 255, 255), // text color
-                    elevation: 5, // button's elevation when it's pressed
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(bus.name ?? '',
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    Text(bus.title ?? '', style: const TextStyle(fontSize: 16)),
+                    Text(bus.agencyName ?? '',
+                        style: const TextStyle(fontSize: 16)),
+                    Text(bus.agencyAddress ?? ''),
+                    Text(bus.agencyEmail ?? ''),
+                    Text(
+                      "Fair: Rs.${bus.fair}" ?? '',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    //view bus button
+                    ElevatedButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.BUS_DETAIL, arguments: bus);
+                      },
+                      child: Text('View Bus'),
+                      style: ElevatedButton.styleFrom(
+                        primary:
+                            Color.fromARGB(208, 92, 117, 143), // background color
+                        onPrimary: const Color.fromARGB(
+                            255, 255, 255, 255), // text color
+                        elevation: 5, // button's elevation when it's pressed
+                      ),
+                    ),
+                   
+                  ],
                 ),
-              ],
+              ),
             ),
-          )),
+          ),
         ],
       ),
     );

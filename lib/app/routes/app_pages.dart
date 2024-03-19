@@ -6,6 +6,8 @@ import '../modules/admin_main/bindings/admin_main_binding.dart';
 import '../modules/admin_main/views/admin_main_view.dart';
 import '../modules/bookings/bindings/bookings_binding.dart';
 import '../modules/bookings/views/bookings_view.dart';
+import '../modules/bus_detail/bindings/bus_detail_binding.dart';
+import '../modules/bus_detail/views/bus_detail_view.dart';
 import '../modules/detail_category/bindings/detail_category_binding.dart';
 import '../modules/detail_category/views/detail_category_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -18,12 +20,11 @@ import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
+
 import '../modules/travel_agency_home/bindings/travel_agency_home_binding.dart';
 import '../modules/travel_agency_home/views/travel_agency_home_view.dart';
 import '../modules/travel_agency_main/bindings/travel_agency_main_binding.dart';
 import '../modules/travel_agency_main/views/travel_agency_main_view.dart';
-import '../modules/bus_detail/bindings/bus_detail_binding.dart';
-import '../modules/bus_detail/views/bus_detail_view.dart';
 
 part 'app_routes.dart';
 
@@ -98,5 +99,6 @@ class AppPages {
       page: () => BusDetailView(),
       binding: BusDetailBinding(),
     ),
+
   ];
 }
