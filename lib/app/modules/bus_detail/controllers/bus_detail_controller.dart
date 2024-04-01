@@ -18,6 +18,7 @@ class BusDetailController extends GetxController {
   var remarksController = TextEditingController();
   var formKey = GlobalKey<FormState>();
 
+
   // final RxList<Seat> seats = <Seat>[].obs;
 
   // Future<void> getSeatsForBus(String busId, String token) async {
@@ -52,41 +53,76 @@ class BusDetailController extends GetxController {
   // }
   final RxList<Seat> seats = <Seat>[].obs;
 
-Future<void> getSeatsForBus(String busId, String token) async {
-  try {
-    Uri url = Uri.http(ipAddress, 'bus_api/getSeats.php');
-    print('API URL: $url');
-    var response =
-        await http.post(url, body: {'token': token, 'bus_id': busId});
-    print('API Response: ${response.body}');
-    var result = SeatResponse.fromJson(jsonDecode(response.body));
+  Future<void> getSeatsForBus(String busId, String token) async {
+    try {
+      Uri url = Uri.http(ipAddress, 'bus_api/getSeats.php');
+      print('API URL: $url');
+      var response =
+          await http.post(url, body: {'token': token, 'bus_id': busId});
+      print('API Response: ${response.body}');
+      var result = SeatResponse.fromJson(jsonDecode(response.body));
 
-    if (result.success == true) {
-      seats.value = result.seats!
-    .map((seat) => Seat(
-          seatId: seat.seatId,
-          seatNumber: seat.seatNumber,
-          availability: seat.availability,
-          busId: seat.busId,
-        ))
-    .toList();
-    } else {
-      showCustomSnackBar(message: result.message ?? 'Failed to fetch theseats');
+      if (result.success == true) {
+        seats.value = result.seats!
+            .map((seat) => Seat(
+                  seatId: seat.seatId,
+                  seatNumber: seat.seatNumber,
+                  availability: seat.availability,
+                  busId: seat.busId,
+                ))
+            .toList();
+      } else {
+        showCustomSnackBar(
+            message: result.message ?? 'Failed to fetch theseats');
+      }
+    } catch (e) {
+      showCustomSnackBar(message: 'Error fetching seats: $e');
     }
+  }
+  void updateSeatAvailability(int index, int availability) {
+    seats[index].availability = availability;
+    update(); // Notify listeners that the state has changed
+  }
+
+Future<void> bookSeat(int seatId, int index) async {
+  try {
+    final response = await http.post(
+      Uri.http(ipAddress, 'bus_api/bookSeat.php'),
+      body: {
+        'token': Memory.getToken() ?? '',
+        'seat_id': seatId.toString(),
+      },
+    );
+
+    final result = jsonDecode(response.body);
+    if (result['success']) {
+      // showCustomSnackBar(message: 'Seat booked successfully yyy');
+      await makePayment(result['booking_id'].toString());
+
+      updateSeatAvailability(index, 0);
+    } else {
+      showCustomSnackBar(message: result['message']);
+    }
+
+    if (result['success']) {
+        await makeSeatPayment(result['booking_id'].toString());
+      } else {
+        showCustomSnackBar(
+          message: result['message'],
+        );
+      }
   } catch (e) {
-    showCustomSnackBar(message: 'Error fetching seats: $e');
+    showCustomSnackBar(message: 'Error booking seat: $e');
   }
 }
 
-void navigateToMakeSeatBookingPage() {
 
-  Get.to(() => MakeSeatBookingPage(
-  seatNumbers: seats.map((seat) => seat.seatNumber ?? '').toList(),
-  seats: seats,
-));
-
-}
-
+  void navigateToMakeSeatBookingPage() {
+    Get.to(() => MakeSeatBookingPage(
+          seatNumbers: seats.map((seat) => seat.seatNumber ?? '').toList(),
+          seats: seats,
+        ));
+  }
 
   void makeBooking() async {
     try {
@@ -106,8 +142,9 @@ void navigateToMakeSeatBookingPage() {
       );
 
       var result = jsonDecode(response.body);
+      print(result['booking_id'].toString());
       if (result['success']) {
-        makePayment(result['booking_id'].toString());
+        await makePayment(result['booking_id'].toString());
       } else {
         showCustomSnackBar(
           message: result['message'],
@@ -120,7 +157,7 @@ void navigateToMakeSeatBookingPage() {
     }
   }
 
-  void makePayment(String bookingId) {
+  makePayment(String bookingId) async {
     try {
       PaymentConfig config = PaymentConfig(
         productName: "Booking",
@@ -138,6 +175,44 @@ void navigateToMakeSeatBookingPage() {
               'bookingId': bookingId,
               'amount': bus.fair ?? '0',
               'details': v.toString()
+            });
+
+            print(response.body);
+            var result = jsonDecode(response.body);
+
+            if (result['success']) {
+              showCustomSnackBar(
+                  message: 'Payment Successful', isSuccess: true);
+              Get.offAllNamed(Routes.MAIN);
+            } else {
+              showCustomSnackBar(message: result['message']);
+            }
+          },
+          onFailure: (v) {
+            showCustomSnackBar(message: v.message);
+          });
+    } catch (e) {
+      showCustomSnackBar(message: e.toString());
+    }
+  }
+  makeSeatPayment(String seat_booking_id) async {
+    try {
+      PaymentConfig config = PaymentConfig(
+        productName: "Booking",
+        //amount: int.parse(bus.fair??'0')*100,
+        amount: 100 * 100,
+        productIdentity: seat_booking_id,
+      );
+      KhaltiScope.of(Get.context!).pay(
+          config: config,
+          preferences: [PaymentPreference.khalti],
+          onSuccess: (v) async {
+            Uri url = Uri.http(ipAddress, 'bus_api/makeSeatPayment.php');
+            var response = await http.post(url, body: {
+              'token': Memory.getToken() ?? '',
+              'seat_booking_id': seat_booking_id,
+              // 'amount':'1240',
+              'remarks': v.toString()
             });
 
             print(response.body);

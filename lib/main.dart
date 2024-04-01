@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nepal_express/app/modules/admin_home/views/admin_home_view.dart';
+import 'package:nepal_express/app/modules/agency/views/agency_view.dart';
+import 'package:nepal_express/app/modules/profile/views/profile_view.dart';
+import 'package:nepal_express/app/modules/users/views/users_view.dart';
 import 'package:nepal_express/app/utils/memory.dart';
 import 'app/routes/app_pages.dart';
 import 'package:nepal_express/app/utils/constants.dart';
@@ -36,10 +40,16 @@ void main() async {
             : isAgency
                 ? Routes.TRAVEL_AGENCY_MAIN
                 : isAdmin
-                    ? Routes.ADMIN_MAIN
+                    ? Routes.ADMIN_HOME
                     : Routes.MAIN,
         getPages: AppPages.routes,
         defaultTransition: Transition.cupertino,
+      // routes: {
+      //   '/adminHome':(context)=> const AdminHomeView(),
+      //   '/addAgency':(context)=> const AgencyView(),
+      //   '/addUser':(context)=> const UsersView(),
+      //   '/profile':(context)=> const ProfileView(),
+      // },
       ),
     ),
   );

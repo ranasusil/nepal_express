@@ -1,24 +1,115 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:get/get.dart';
-
+import 'package:nepal_express/app/components/pie_chart.dart';
+import 'package:nepal_express/app/components/sidebar.dart';
+import 'package:nepal_express/app/components/stats_card.dart';
+import 'package:nepal_express/app/utils/memory.dart';
 import '../controllers/admin_home_controller.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class AdminHomeView extends GetView<AdminHomeController> {
   const AdminHomeView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('AdminHomeView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'AdminHomeView is working',
-          style: TextStyle(fontSize: 20),
-        ),
-      ),
-    );
+    return AdminScaffold(
+        sideBar: sidebar(context),
+        body: GetBuilder<AdminHomeController>(
+          builder: (controller) {
+            if (controller.statsResponse == null) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    child: Wrap(children: [
+                      StatsContainer(
+                        svg: 'assets/images/bus.svg',
+                        title: 'Buses',
+                        value:
+                            controller.statsResponse!.statistics?.noOfBuses ??
+                                '',
+                        color: Color.fromARGB(255, 254, 204, 204),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Visibility(
+                        visible: Memory.getRole() == 'admin',
+                        child: StatsContainer(
+                          svg: 'assets/images/people.svg',
+                          title: 'No of Users',
+                          value: controller
+                                  .statsResponse!.statistics?.totalUsers ??
+                              '',
+                          color: Color.fromARGB(255, 252, 252, 169),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      StatsContainer(
+                        svg: 'assets/images/bookings.svg',
+                        title: 'Bookings',
+                        value: controller
+                                .statsResponse!.statistics?.totalBookings ??
+                            '',
+                        color: Color.fromARGB(255, 255, 255, 255),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      StatsContainer(
+                        svg: 'assets/images/income.svg',
+                        title: 'Total Monthly Income',
+                        value:
+                            "Rs.${controller.statsResponse!.statistics?.totalMonthlyIncome}" ??
+                                '',
+                        color: Color.fromARGB(255, 209, 173, 250),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      StatsContainer(
+                        svg: 'assets/images/totalIncome.svg',
+                        title: 'Total Income',
+                        value:
+                            "Rs.${controller.statsResponse!.statistics?.totalIncome}" ??
+                                '',
+                        color: Color.fromARGB(255, 168, 252, 175),
+                      ),
+                    ]),
+                  ),
+                  const SizedBox(height: 50),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: 20),
+                      Text("Revenue data of past 5 months.")
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(width: 20),
+                      Container(
+                        height: 350,
+                        child: NewPieChart(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        ));
   }
 }

@@ -396,21 +396,87 @@ class MakeBookingPage extends StatelessWidget {
   }
 }
 
+// class MakeSeatBookingPage extends StatelessWidget {
+//   final List<String> seatNumbers;
+//    final List<Seat> seats;
+//   MakeSeatBookingPage({required this.seatNumbers, required this.seats});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Seat Booking Page'),
+//       ),
+//       body: Column(
+//         children: [
+//           Padding(
+//             padding: const EdgeInsets.all(8.0),
+//             child: Text(
+//               'Seats for the bus.',
+//               style: TextStyle(
+//                 fontSize: 18.0,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//           ),
+//           Expanded(
+//             child: GridView.builder(
+//               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//                 crossAxisCount: 4,
+//                 crossAxisSpacing: 8.0,
+//                 mainAxisSpacing: 8.0,
+//               ),
+//               itemCount: seatNumbers.length,
+//               itemBuilder: (context, index) {
+//                 Seat seat = seats[index];
+//                 Color containerColor = seat.availability == 0
+//                     ? Colors.red
+//                     : Color.fromARGB(255, 6, 170, 0);
+//                 return Padding(
+//                   padding: const EdgeInsets.all(15.0),
+//                   child: Container(
+//                     decoration: BoxDecoration(
+//                        color: seat.availability == 0 ? Colors.red : Colors.lightGreen,
+//     border: Border.all(),
+//     borderRadius: BorderRadius.circular(8.0),
+
+//                     ),
+//                     child: Center(
+//                       child: Text(
+//                         seatNumbers[index],
+//                         style: TextStyle(
+//                           color: Colors.white,
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 );
+//               },
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
 class MakeSeatBookingPage extends StatelessWidget {
   final List<String> seatNumbers;
-   final List<Seat> seats;
+  final List<Seat> seats;
+  final BusDetailController controller = Get.find();
+
   MakeSeatBookingPage({required this.seatNumbers, required this.seats});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Seat Booking Page'),
+        title: const Text('Seat Booking Page'),
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text(
               'Seats for the bus.',
               style: TextStyle(
@@ -421,7 +487,7 @@ class MakeSeatBookingPage extends StatelessWidget {
           ),
           Expanded(
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4,
                 crossAxisSpacing: 8.0,
                 mainAxisSpacing: 8.0,
@@ -434,18 +500,38 @@ class MakeSeatBookingPage extends StatelessWidget {
                     : Color.fromARGB(255, 6, 170, 0);
                 return Padding(
                   padding: const EdgeInsets.all(15.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                       color: seat.availability == 0 ? Colors.red : Colors.lightGreen,
-    border: Border.all(),
-    borderRadius: BorderRadius.circular(8.0),
-                    
-                    ),
-                    child: Center(
-                      child: Text(
-                        seatNumbers[index],
-                        style: TextStyle(
-                          color: Colors.white,
+                  child: GestureDetector(
+                    onTap: () {
+                      if (seat.availability == 1) {
+                        Get.defaultDialog(
+                          title: "Book Seat",
+                          content: ElevatedButton(
+                            onPressed: () async {
+                              Get.back();
+                              await controller.bookSeat(
+                                  seat.seatId ?? -1, index);
+                            },
+                            child: Text("Book the seat"),
+                          ),
+                        );
+                      }
+                    },
+                    // onTap: () {
+                    //   controller.bookSeat(seat.seatId.toString());
+                    // },
+
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: containerColor,
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          seatNumbers[index],
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

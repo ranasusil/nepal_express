@@ -35,7 +35,7 @@ class SeatResponse {
 class Seat {
     final int? seatId;
     final String? seatNumber;
-    final int? availability;
+     int? availability;
     final int? busId;
 
     Seat({

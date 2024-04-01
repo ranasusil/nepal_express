@@ -16,7 +16,11 @@ abstract class Routes {
   static const PROFILE = _Paths.PROFILE;
   static const DETAIL_CATEGORY = _Paths.DETAIL_CATEGORY;
   static const BUS_DETAIL = _Paths.BUS_DETAIL;
-
+  static const BUS = _Paths.BUS;
+  static const USERS = _Paths.USERS;
+  static const ADMIN_PROFILE = _Paths.ADMIN_PROFILE;
+  static const ALL_BUSES = _Paths.ALL_BUSES;
+  static const TRIPS = _Paths.TRIPS;
 }
 
 abstract class _Paths {
@@ -34,5 +38,9 @@ abstract class _Paths {
   static const PROFILE = '/profile';
   static const DETAIL_CATEGORY = '/detail-category';
   static const BUS_DETAIL = '/bus-detail';
-
+  static const BUS = '/bus';
+  static const USERS = '/users';
+  static const ADMIN_PROFILE = '/admin-profile';
+  static const ALL_BUSES = '/all-buses';
+  static const TRIPS = '/trips';
 }
