@@ -35,19 +35,27 @@ class TripResponse {
 class Trip {
     final String? tripId;
     final String? title;
+    final String? cityFrom;
+    final String? cityTo;
 
     Trip({
         this.tripId,
         this.title,
+        this.cityFrom,
+        this.cityTo,
     });
 
     factory Trip.fromJson(Map<String, dynamic> json) => Trip(
         tripId: json["trip_id"],
         title: json["title"],
+        cityFrom: json["cityFrom"],
+        cityTo: json["cityTo"],
     );
 
     Map<String, dynamic> toJson() => {
         "trip_id": tripId,
         "title": title,
+        "cityFrom": cityFrom,
+        "cityTo": cityTo,
     };
 }

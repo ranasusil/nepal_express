@@ -56,10 +56,10 @@ class BusDetailController extends GetxController {
   Future<void> getSeatsForBus(String busId, String token) async {
     try {
       Uri url = Uri.http(ipAddress, 'bus_api/getSeats.php');
-      print('API URL: $url');
+
       var response =
           await http.post(url, body: {'token': token, 'bus_id': busId});
-      print('API Response: ${response.body}');
+
       var result = SeatResponse.fromJson(jsonDecode(response.body));
 
       if (result.success == true) {
@@ -79,12 +79,36 @@ class BusDetailController extends GetxController {
       showCustomSnackBar(message: 'Error fetching seats: $e');
     }
   }
-  void updateSeatAvailability(int index, int availability) {
-    seats[index].availability = availability;
-    update(); // Notify listeners that the state has changed
+
+ void sortSeats() {
+    // Sort the seats based on row and column positions
+    seats.sort((a, b) {
+      if (a.seatNumber == null || b.seatNumber == null) return 0;
+
+      // Extract row and column numbers from seat numbers (e.g., "1A" -> row: 1, column: 1)
+      final aRow = int.tryParse(a.seatNumber![0]) ?? 0;
+      final bRow = int.tryParse(b.seatNumber![0]) ?? 0;
+      final aColumn = a.seatNumber![1].codeUnitAt(0);
+      final bColumn = b.seatNumber![1].codeUnitAt(0);
+
+      // Sort first by row and then by column
+      if (aRow == bRow) {
+        return aColumn.compareTo(bColumn);
+      } else {
+        return aRow.compareTo(bRow);
+      }
+    });
   }
 
-Future<void> bookSeat(int seatId, int index) async {
+
+
+
+Future<void> bookSeat(int? seatId) async {
+  if (seatId == null) {
+    // Handle the case where seatId is null
+    return;
+  }
+  
   try {
     final response = await http.post(
       Uri.http(ipAddress, 'bus_api/bookSeat.php'),
@@ -96,26 +120,39 @@ Future<void> bookSeat(int seatId, int index) async {
 
     final result = jsonDecode(response.body);
     if (result['success']) {
-      // showCustomSnackBar(message: 'Seat booked successfully yyy');
       await makePayment(result['booking_id'].toString());
-
-      updateSeatAvailability(index, 0);
+      // updateSeatAvailability(seatId, 0);
     } else {
-      showCustomSnackBar(message: result['message']);
+      if (result['message'] == 'Seat is already booked!') {
+        // Show snackbar indicating the seat is already booked
+        Get.snackbar(
+          'Seat Booking',
+          'The selected seat is already booked.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      } else {
+        // Show other error messages
+        showCustomSnackBar(message: result['message']);
+      }
     }
 
     if (result['success']) {
-        await makeSeatPayment(result['booking_id'].toString());
-      } else {
-        showCustomSnackBar(
-          message: result['message'],
-        );
-      }
+      await makeSeatPayment(result['booking_id'].toString());
+    } else {
+      showCustomSnackBar(
+        message: result['message'],
+      );
+    }
   } catch (e) {
     showCustomSnackBar(message: 'Error booking seat: $e');
   }
 }
 
+
+void updateSeatAvailability(int index, int availability) {
+  seats[index].availability = availability;
+  update();
+}
 
   void navigateToMakeSeatBookingPage() {
     Get.to(() => MakeSeatBookingPage(
@@ -243,7 +280,17 @@ Future<void> bookSeat(int seatId, int index) async {
       getSeatsForBus(bus.id!, Memory.getToken() ?? '');
     }
   }
-
+void fetchSeats() async {
+    try {
+      // Replace this with your API call to fetch seat data
+      final response = ''; // Make API call to fetch seat data
+      final seatResponse = seatResponseFromJson(response);
+      seats.assignAll(seatResponse.seats ?? []);
+      sortSeats(); // Sort seats after fetching
+    } catch (e) {
+      print('Error fetching seats: $e');
+    }
+  }
   @override
   void onReady() {
     super.onReady();

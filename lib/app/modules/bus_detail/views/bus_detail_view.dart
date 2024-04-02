@@ -184,10 +184,18 @@ class BusDetailView extends GetView<BusDetailController> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
-                    shadowColor: Colors.black, // Color of the shadow
+                    shadowColor: Colors.black,
                   ),
                   onPressed: () {
-                    Get.to(() => MakeBookingPage(bus: bus!), arguments: bus);
+                    if (bus?.isBookable == 0) {
+                      Get.snackbar(
+                        'Seat Booking',
+                        'This vehicle is not available for booking.',
+                        snackPosition: SnackPosition.BOTTOM,
+                      );
+                    } else {
+                      Get.to(() => MakeBookingPage(bus: bus!), arguments: bus);
+                    }
                   },
                   child: Text(
                     'Book the Vehicle',
@@ -253,30 +261,32 @@ class MakeBookingPage extends StatelessWidget {
                     readOnly: true,
                     controller: controller.dateController,
                     decoration: InputDecoration(
-                        labelText: 'Booking Date',
-                        hintText: 'Select your booking date',
-                        border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(25),
-                          ),
+                      labelText: 'Booking Date',
+                      hintText: 'Select your booking date',
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(25),
                         ),
-                        disabledBorder: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                            onPressed: () async {
-                              DateTime? date = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime.now().add(
-                                  const Duration(days: 30),
-                                ),
-                              );
-                              if (date != null) {
-                                controller.dateController.text =
-                                    date.toString().split(' ')[0];
-                              }
-                            },
-                            icon: const Icon(Icons.calendar_month))),
+                      ),
+                      disabledBorder: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        onPressed: () async {
+                          DateTime? date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime.now().add(
+                              const Duration(days: 30),
+                            ),
+                          );
+                          if (date != null) {
+                            controller.dateController.text =
+                                date.toString().split(' ')[0];
+                          }
+                        },
+                        icon: const Icon(Icons.calendar_month),
+                      ),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please select your booking date';
@@ -459,7 +469,6 @@ class MakeBookingPage extends StatelessWidget {
 //     );
 //   }
 // }
-
 class MakeSeatBookingPage extends StatelessWidget {
   final List<String> seatNumbers;
   final List<Seat> seats;
@@ -473,74 +482,83 @@ class MakeSeatBookingPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Seat Booking Page'),
       ),
-      body: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              'Seats for the bus.',
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
-              ),
-              itemCount: seatNumbers.length,
-              itemBuilder: (context, index) {
-                Seat seat = seats[index];
-                Color containerColor = seat.availability == 0
-                    ? Colors.red
-                    : Color.fromARGB(255, 6, 170, 0);
-                return Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      if (seat.availability == 1) {
-                        Get.defaultDialog(
-                          title: "Book Seat",
-                          content: ElevatedButton(
-                            onPressed: () async {
-                              Get.back();
-                              await controller.bookSeat(
-                                  seat.seatId ?? -1, index);
-                            },
-                            child: Text("Book the seat"),
-                          ),
-                        );
-                      }
-                    },
-                    // onTap: () {
-                    //   controller.bookSeat(seat.seatId.toString());
-                    // },
+      body: Container(
+        margin: const EdgeInsets.all(10.0), // Add margin of 5.0
+        padding: const EdgeInsets.all(8.0),
 
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: containerColor,
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Center(
-                        child: Text(
-                          seatNumbers[index],
-                          style: const TextStyle(
-                            color: Colors.white,
-                          ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey, // Border color
+            width: 1.0, // Border width
+          ),
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        child: Stack(children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Seats for the bus.',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+             
+              const SizedBox(height: 15.0),
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 8.0,
+                    mainAxisSpacing: 8.0,
+                  ),
+                  itemCount: seatNumbers.length,
+                  itemBuilder: (context, index) {
+                    Seat seat = seats[index];
+                    String seatImage = seat.availability == 0
+                        ? 'assets/images/seat2.png'
+                        : 'assets/images/seat1.png';
+
+                    return Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          if (seat.availability == 1) {
+                            Get.defaultDialog(
+                              title: "Book Seat",
+                              content: ElevatedButton(
+                                onPressed: () async {
+                                  Get.back();
+                                  await controller.bookSeat(seat.seatId);
+                                },
+                                child: const Text("Book the seat"),
+                              ),
+                            );
+                          }
+                        },
+                        child: Image.asset(
+                          seatImage,
+                          width: 48, // Adjust width and height as needed
+                          height: 48,
                         ),
                       ),
-                    ),
-                  ),
-                );
-              },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            top: 0,
+            right: 25,
+            child: Image.asset(
+              'assets/images/streeing.png',
+              width: 50, // Adjust width as needed
+              height: 50, // Adjust height as needed
             ),
           ),
-        ],
+        ]),
       ),
     );
   }

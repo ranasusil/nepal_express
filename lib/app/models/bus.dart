@@ -1,6 +1,4 @@
-// To parse this JSON data, do
-//
-//     final busesResponse = busesResponseFromJson(jsonString);
+
 
 import 'dart:convert';
 
@@ -41,6 +39,7 @@ class Bus {
     final String? yearsUsed;
     final String? agencyId;
     final String? isDeleted;
+    final String? isBookable;
     final String? title;
     final String? agencyName;
     final String? agencyEmail;
@@ -55,6 +54,7 @@ class Bus {
         this.yearsUsed,
         this.agencyId,
         this.isDeleted,
+        this.isBookable,
         this.title,
         this.agencyName,
         this.agencyEmail,
@@ -70,6 +70,7 @@ class Bus {
         yearsUsed: json["years_used"],
         agencyId: json["agency_id"],
         isDeleted: json["isDeleted"],
+        isBookable: json["isBookable"],
         title: json["title"],
         agencyName: json["agency_name"],
         agencyEmail: json["agency_email"],
@@ -85,6 +86,7 @@ class Bus {
         "years_used": yearsUsed,
         "agency_id": agencyId,
         "isDeleted": isDeleted,
+        "isBookable": isBookable,
         "title": title,
         "agency_name": agencyName,
         "agency_email": agencyEmail,
