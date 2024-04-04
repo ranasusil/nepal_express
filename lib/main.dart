@@ -44,12 +44,7 @@ void main() async {
                     : Routes.MAIN,
         getPages: AppPages.routes,
         defaultTransition: Transition.cupertino,
-      // routes: {
-      //   '/adminHome':(context)=> const AdminHomeView(),
-      //   '/addAgency':(context)=> const AgencyView(),
-      //   '/addUser':(context)=> const UsersView(),
-      //   '/profile':(context)=> const ProfileView(),
-      // },
+
       ),
     ),
   );

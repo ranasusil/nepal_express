@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nepal_express/app/components/sidebar.dart';
 
 import '../controllers/users_controller.dart';
+
 class UsersView extends GetView<UsersController> {
   const UsersView({Key? key}) : super(key: key);
 
@@ -30,6 +32,13 @@ class UsersView extends GetView<UsersController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+               Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Text(
+                  'All Users',
+                  style: GoogleFonts.arsenal(fontSize: 50),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: ElevatedButton(
@@ -53,12 +62,21 @@ class UsersView extends GetView<UsersController> {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
                   ),
-                  headingRowColor: MaterialStateColor.resolveWith((states) => Colors.grey[300]!),
+                  headingRowColor: MaterialStateColor.resolveWith(
+                      (states) => Colors.grey[300]!),
                   columns: const [
-                    DataColumn(label: Text('Full Name', style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(label: Text('Email', style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(label: Text('Role', style: TextStyle(fontWeight: FontWeight.bold))),
-                    DataColumn(label: Text('Address', style: TextStyle(fontWeight: FontWeight.bold))),
+                    DataColumn(
+                        label: Text('Full Name',
+                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    DataColumn(
+                        label: Text('Email',
+                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    DataColumn(
+                        label: Text('Role',
+                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    DataColumn(
+                        label: Text('Address',
+                            style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
                   rows: List<DataRow>.generate(
                     controller.users.length,

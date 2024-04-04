@@ -2,12 +2,16 @@ import 'package:get/get.dart';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nepal_express/app/models/bus.dart';
+import 'package:nepal_express/app/models/trip.dart';
 import 'package:nepal_express/app/utils/constants.dart';
 import 'package:nepal_express/app/utils/memory.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:nepal_express/app/modules/home/controllers/home_controller.dart';
+// import 'package:nepal_express/app/modules/home/controllers/home_controller.dart';
 class BusController extends GetxController {
+    BusesResponse? busesResponse;
+  TripResponse? tripResponse;
 
   var busNameController = TextEditingController();
   var fairController = TextEditingController();
@@ -20,6 +24,8 @@ class BusController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+        getBuses();
+    getTrips();
   }
 
   @override
@@ -34,30 +40,30 @@ class BusController extends GetxController {
 
   void increment() => count.value++;
 
-   void addBus() async {
-    try {
-      if (formKey.currentState!.validate()) {
-        if (imageBytes == null) {
-          showCustomSnackBar(
-            message: 'Please select image',
-          );
-          return;
-        }
-        var url = Uri.http(ipAddress, 'bus_api/addBus.php');
+ void addBus() async {
+  try {
+    if (formKey.currentState!.validate()) {
+      if (imageBytes == null) {
+        showCustomSnackBar(
+          message: 'Please select image',
+        );
+        return;
+      }
+      var url = Uri.http(ipAddress, 'bus_api/addBus.php');
 
-        var request = http.MultipartRequest('POST', url);
-        request.fields['token'] = Memory.getToken() ?? '';
-        request.fields['name'] = busNameController.text;
-        request.fields['fair'] = fairController.text;
-        request.fields['years_used'] = yearsUsedController.text;
-        request.fields['trip_id'] = tripId ?? '';
-        request.files.add(http.MultipartFile.fromBytes(
-          'avatar',
-          imageBytes!,
-          filename: image!.name,
-        ));
+      var request = http.MultipartRequest('POST', url);
+      request.fields['token'] = Memory.getToken() ?? '';
+      request.fields['name'] = busNameController.text;
+      request.fields['fair'] = fairController.text;
+      request.fields['years_used'] = yearsUsedController.text;
+      request.fields['trip_id'] = tripId ?? '';
+      request.files.add(http.MultipartFile.fromBytes(
+        'avatar',
+        imageBytes!,
+        filename: image!.name,
+      ));
 
-       var response = await request.send();
+      var response = await request.send();
       if (response.statusCode == 200) {
         var data = await response.stream.bytesToString();
         var result = jsonDecode(data);
@@ -75,8 +81,6 @@ class BusController extends GetxController {
             message: result['message'],
             isSuccess: true,
           );
-
-          Get.find<HomeController>().getBuses();
         } else {
           showCustomSnackBar(
             message: result['message'],
@@ -88,13 +92,61 @@ class BusController extends GetxController {
         );
       }
     }
-    } catch (e) {
+  } catch (e) {
+    showCustomSnackBar(
+      message: 'Something went wrong while adding the bus.',
+    );
+  }
+}
+void deleteBus(String busId) async {
+  try {
+    var url = Uri.http(ipAddress, 'bus_api/deleteBus.php');
+
+    var response = await http.post(url, body: {
+      'token': Memory.getToken(),
+      'bus_id': busId,
+    });
+
+    var result = jsonDecode(response.body);
+
+    if (result['success']) {
+      Get.back();
       showCustomSnackBar(
-        message: 'Something went wrong while adding the bus.',
+        message: result['message'],
+        isSuccess: true,
+      );
+      // Call the getBuses method directly from the BusController
+      getBuses();
+    } else {
+      showCustomSnackBar(
+        message: result['message'],
       );
     }
+  } catch (e) {
+    showCustomSnackBar(
+      message: 'Something went wrong',
+    );
   }
+}
 
+    Future<void> getBuses() async {
+    try {
+      var url = Uri.http(ipAddress, 'bus_api/getBuses.php');
+
+      var response = await http.post(url, body: {"token": Memory.getToken()});
+      busesResponse = busesResponseFromJson(response.body);
+      update();
+
+      if (busesResponse?.success ?? false) {
+        // Success handling
+      } else {
+        // Error handling
+      }
+    } catch (e) {
+      print(e);
+      // Error handling
+    }
+  }
   void pickImage() async {
     try {
       ImagePicker picker = ImagePicker();
@@ -106,35 +158,26 @@ class BusController extends GetxController {
       update();
     } catch (e) {}
   }
-
-  void deleteBus(String busId) async {
+  Future<void> getTrips() async {
     try {
-      var url = Uri.http(ipAddress, 'bus_api/deleteBus.php');
+      var url = Uri.http(ipAddress, 'bus_api/getTrips.php');
 
-      var response = await http.post(url, body: {
-        'token': Memory.getToken(),
-        'bus_id': busId,
-      });
+      var response = await http.post(url, body: {"token": Memory.getToken()});
+      tripResponse = tripResponseFromJson(response.body);
+      update();
 
-      var result = jsonDecode(response.body);
-
-      if (result['success']) {
-        Get.back();
-        showCustomSnackBar(
-          message: result['message'],
-          isSuccess: true,
-        );
-        await Get.find<HomeController>().getBuses();
+      if (tripResponse?.success ?? false) {
+        // Success handling
       } else {
-        showCustomSnackBar(
-          message: result['message'],
-        );
+        // Error handling
       }
     } catch (e) {
-      showCustomSnackBar(
-        message: 'Something went wrong',
-      );
+      print(e);
+      // Error handling
     }
   }
-
+    void refreshPage() {
+    // Trigger an update to refresh the page
+    update();
+  }
 }

@@ -137,7 +137,7 @@ Future<void> bookSeat(int? seatId) async {
     }
 
     if (result['success']) {
-      await makeSeatPayment(result['booking_id'].toString());
+      await makePayment(result['booking_id'].toString());
     } else {
       showCustomSnackBar(
         message: result['message'],

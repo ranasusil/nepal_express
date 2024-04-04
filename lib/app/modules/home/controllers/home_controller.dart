@@ -75,7 +75,7 @@ Future<void> getTrips() async {
     } catch (e) {
       print(e);
       showCustomSnackBar(
-        message: 'Something went wronggg',
+        message: 'Something went wrongg',
       );
     }
   }

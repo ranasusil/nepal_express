@@ -1,161 +1,157 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:nepal_express/app/modules/home/controllers/home_controller.dart';
 import 'package:nepal_express/app/utils/constants.dart';
-
 import '../controllers/bus_controller.dart';
 
-class BusView extends GetView<BusController> {
+class BusView extends StatelessWidget {
   const BusView({Key? key}) : super(key: key);
+
   @override
- Widget build(BuildContext context) {
-    Get.put(BusController());
-    var busController = controller;
+  Widget build(BuildContext context) {
+    final busController = Get.put(BusController());
+
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Buses'),
-          centerTitle: true,
-        ),
-        body: GetBuilder<HomeController>(
-          builder: (controller) {
-            if (controller.busesResponse == null) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: controller.busesResponse?.buses?.length,
-                itemBuilder: (context, index) {
-                  var bus = controller.busesResponse!.buses![index];
-                  return Card(
-                    elevation: 15,
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 15,
+      appBar: AppBar(
+        title: const Text('Buses'),
+        centerTitle: true,
+      ),
+      body: GetBuilder<BusController>(
+        builder: (controller) {
+          if (controller.busesResponse == null) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: controller.busesResponse?.buses?.length,
+              itemBuilder: (context, index) {
+                var bus = controller.busesResponse!.buses![index];
+                return Card(
+                  elevation: 15,
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 15,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(184, 215, 227, 233),
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(184, 215, 227, 233),
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Row(
-                        children: [
-                          Image.network(
-                            getImageUrl(bus.avatar),
-                            width: 100,
-                          ),
-                          const SizedBox(width: 20),
-                          SizedBox(
-                            height: 75,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      (bus.name ?? ''),
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                    child: Row(
+                      children: [
+                        Image.network(
+                          getImageUrl(bus.avatar),
+                          width: 100,
+                        ),
+                        const SizedBox(width: 20),
+                        SizedBox(
+                          height: 75,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    (bus.name ?? ''),
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    Text(
-                                      bus.isDeleted == '1'
-                                          ? ' (Deleted)'
-                                          : '',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.red,
-                                      ),
+                                  ),
+                                  Text(
+                                    bus.isDeleted == '1' ? ' (Deleted)' : '',
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                bus.title ?? '',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                bus.fair ?? '',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text(bus.isDeleted == '0'
+                                      ? 'Delete bus'
+                                      : 'Restore Bus'),
+                                  content: Text(bus.isDeleted == '0'
+                                      ? "Are you sure want to delete?"
+                                      : "Are you sure want to restore?"),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        busController.deleteBus(bus.id ?? '');
+                                      },
+                                      child: const Text('Yes'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Get.back();
+                                      },
+                                      child: const Text('No'),
                                     ),
                                   ],
-                                ),
-                                Text(
-                                  bus.title ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  bus.fair ?? '',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Spacer(),
-                          IconButton(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Text(bus.isDeleted == '0'
-                                        ? 'Delete bus'
-                                        : 'Restore Bus'),
-                                    content: Text(bus.isDeleted == '0'
-                                        ? "Are you sure want to delete?"
-                                        : "Are you sure want to restore?"),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          busController
-                                              .deleteBus(bus.id ?? '');
-                                        },
-                                        child: const Text('Yes'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Get.back();
-                                        },
-                                        child: const Text('No'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                            icon: bus.isDeleted == '1'
-                                ? const Icon(
-                                    Icons.restore,
-                                    color: Colors.green,
-                                  )
-                                : const Icon(Icons.delete),
-                            color: Colors.red,
-                          ),
-                        ],
-                      ),
+                                );
+                              },
+                            );
+                          },
+                          icon: bus.isDeleted == '1'
+                              ? const Icon(
+                                  Icons.restore,
+                                  color: Colors.green,
+                                )
+                              : const Icon(Icons.delete),
+                          color: Colors.red,
+                        ),
+                      ],
                     ),
-                  );
-                },
-              );
-            }
-          },
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return const AddBusPopup();
-                });
-          },
-          child: const Icon(Icons.add),
-        ));
+                  ),
+                );
+              },
+            );
+          }
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return const AddBusPopup();
+              });
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }
 
 class AddBusPopup extends StatelessWidget {
-  const AddBusPopup({super.key});
+  const AddBusPopup({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.find<BusController>();
-    return Dialog.fullscreen(
+    final controller = Get.find<BusController>();
+    return Dialog(
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Add Bus'),
@@ -176,18 +172,14 @@ class AddBusPopup extends StatelessWidget {
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
-                            width: 1.5,
-                            color:
-                                Color.fromARGB(196, 32, 55, 79)),
+                            width: 1.5, color: Color.fromARGB(196, 32, 55, 79)),
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                       labelText: 'Bus Name',
                       hintText: 'Enter your bus name',
                       border: OutlineInputBorder(
                         borderSide: const BorderSide(
-                            width: 1.5,
-                            color:
-                                Color.fromARGB(196, 32, 55, 79)),
+                            width: 1.5, color: Color.fromARGB(196, 32, 55, 79)),
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                     ),
@@ -207,18 +199,14 @@ class AddBusPopup extends StatelessWidget {
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: const BorderSide(
-                            width: 1.5,
-                            color:
-                                Color.fromARGB(196, 32, 55, 79)),
+                            width: 1.5, color: Color.fromARGB(196, 32, 55, 79)),
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                       labelText: 'Bus Fair',
                       hintText: 'Enter the bus fair',
                       border: OutlineInputBorder(
                         borderSide: const BorderSide(
-                            width: 1.5,
-                            color:
-                                Color.fromARGB(196, 32, 55, 79)),
+                            width: 1.5, color: Color.fromARGB(196, 32, 55, 79)),
                         borderRadius: BorderRadius.circular(50.0),
                       ),
                     ),
@@ -229,7 +217,7 @@ class AddBusPopup extends StatelessWidget {
                       return null;
                     },
                   ),
-                 const SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
@@ -239,8 +227,7 @@ class AddBusPopup extends StatelessWidget {
                         enabledBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
                               width: 1.5,
-                              color: Color.fromARGB(
-                                  196, 32, 55, 79)), //<-- SEE HERE
+                              color: Color.fromARGB(196, 32, 55, 79)),
                           borderRadius: BorderRadius.circular(50.0),
                         ),
                         labelText: 'Experience',
@@ -248,8 +235,7 @@ class AddBusPopup extends StatelessWidget {
                         border: OutlineInputBorder(
                           borderSide: const BorderSide(
                               width: 1.5,
-                              color: Color.fromARGB(
-                                  196, 32, 55, 79)), //<-- SEE HERE
+                              color: Color.fromARGB(196, 32, 55, 79)),
                           borderRadius: BorderRadius.circular(50.0),
                         ),
                         suffixIcon: const Column(
@@ -265,66 +251,28 @@ class AddBusPopup extends StatelessWidget {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  GetBuilder<HomeController>(
-                    builder: (homeController) {
-                      if (homeController.tripResponse == null) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return DropdownButtonFormField<String>(
-                        items: homeController
-                            .tripResponse!.trip!
-                            .map((e) => DropdownMenuItem(
-                                  value: e.tripId.toString(),
+                  const SizedBox(height: 20),
+                  DropdownButtonFormField<String>(
+                    items: controller.tripResponse?.trip
+                            ?.map((e) => DropdownMenuItem(
+                                  value: e.tripId ?? '',
                                   child: Text(e.title ?? ''),
                                 ))
-                            .toList(),
-
-                        // items: [
-                        //   DropdownMenuItem(
-                        //     child: Text('Admin'),
-                        //     value: 'admin',
-                        //   ),
-                        //   DropdownMenuItem(
-                        //     child: Text('Agency'),
-                        //     value: 'agency',
-                        //   ),
-                        // ],
-
-                        onChanged: (v) {
-                          controller.tripId = v;
-                          controller.update();
-                        },
-                        value: controller.tripId,
-                        decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                width: 1.5,
-                                color: Color.fromARGB(
-                                    196, 32, 55, 79)),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                          labelText: 'Trip',
-                          hintText: 'Select bus trip',
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                width: 1.5,
-                                color: Color.fromARGB(
-                                    196, 32, 55, 79)),
-                            borderRadius: BorderRadius.circular(50.0),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please select bus trip';
-                          }
-                          return null;
-                        },
-                      );
+                            .toList() ??
+                        [],
+                    onChanged: (value) {
+                      controller.tripId = value;
+                    },
+                    value: controller.tripId,
+                    decoration: InputDecoration(
+                      labelText: 'Trip',
+                      hintText: 'Select bus trip',
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please select bus trip';
+                      }
+                      return null;
                     },
                   ),
                   const SizedBox(
@@ -380,13 +328,16 @@ class AddBusPopup extends StatelessWidget {
                     height: 20,
                   ),
                   ElevatedButton(
-                    onPressed: controller.addBus,
+                    onPressed: () {
+                      controller.addBus();
+                      controller.refreshPage();
+                    },
                     style: ElevatedButton.styleFrom(
                       primary:
-                          Color.fromARGB(208, 62, 73, 111), // background color
+                          Color.fromARGB(208, 62, 73, 111),
                       onPrimary: const Color.fromARGB(
-                          255, 255, 255, 255), // text color
-                      elevation: 5, // button's elevation when it's pressed
+                          255, 255, 255, 255),
+                      elevation: 5,
                     ),
                     child: const Text('Add Bus'),
                   ),
