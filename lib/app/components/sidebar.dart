@@ -49,6 +49,7 @@ SideBar sidebar(BuildContext context) {
         AdminMenuItem(title: 'Add Agency'),
       ]),
       AdminMenuItem(title: 'Buses', icon: Icons.train, route: '/all-buses'),
+      AdminMenuItem(title: 'Trips', icon: Icons.train, route: '/trips'),
       AdminMenuItem(
           title: 'Profile', route: '/admin-profile', icon: Icons.person),
     ],

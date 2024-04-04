@@ -91,6 +91,23 @@ class UsersView extends GetView<UsersController> {
                   ),
                 ),
               ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => controller.previousPage(),
+                    child: const Text('Previous'),
+                  ),
+                   const SizedBox(width: 10),
+                  Text('Page ${controller.currentPage}'),
+                   const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () => controller.nextPage(),
+                    child: const Text('Next'),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

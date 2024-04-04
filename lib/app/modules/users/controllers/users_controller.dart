@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -14,8 +13,12 @@ class UsersController extends GetxController {
   var addressController = TextEditingController();
   var registerFormKey = GlobalKey<FormState>();
   String roleValue = 'user';
-
+  static const int usersPerPage = 10; // Static member for total users per page
   var users = <User>[].obs;
+
+  int currentPage = 1; // Current page number
+  // int usersPerPage = 10; // Remove this line, as it conflicts with the static member
+
   @override
   void onInit() {
     super.onInit();
@@ -64,16 +67,19 @@ class UsersController extends GetxController {
 
   void getUsers() async {
     try {
-      var url = Uri.http(
-          ipAddress, 'bus_api/getUsers.php', {'token': Memory.getToken()});
+      int startIndex = (currentPage - 1) * usersPerPage;
+      var url = Uri.http(ipAddress, 'bus_api/getUsers.php', {
+        'token': Memory.getToken(),
+        'page': '$currentPage',
+        'limit': '$usersPerPage'
+      });
       var response = await http.get(url);
 
       if (response.statusCode == 200) {
         var jsonData = jsonDecode(response.body);
         if (jsonData['success']) {
           List<dynamic> usersData = jsonData['users'];
-          users.assignAll(
-              usersData.map((userData) => User.fromJson(userData)).toList());
+          users.assignAll(usersData.map((userData) => User.fromJson(userData)).toList());
         } else {
           print('API Error: ${jsonData['message']}');
         }
@@ -82,6 +88,18 @@ class UsersController extends GetxController {
       }
     } catch (e) {
       print('Error: $e');
+    }
+  }
+
+  void nextPage() {
+    currentPage++;
+    getUsers();
+  }
+
+  void previousPage() {
+    if (currentPage > 1) {
+      currentPage--;
+      getUsers();
     }
   }
 }
