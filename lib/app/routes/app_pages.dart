@@ -18,6 +18,8 @@ import '../modules/bus_detail/bindings/bus_detail_binding.dart';
 import '../modules/bus_detail/views/bus_detail_view.dart';
 import '../modules/detail_category/bindings/detail_category_binding.dart';
 import '../modules/detail_category/views/detail_category_view.dart';
+import '../modules/edit_user/bindings/edit_user_binding.dart';
+import '../modules/edit_user/views/edit_user_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -134,6 +136,11 @@ class AppPages {
       name: _Paths.TRIPS,
       page: () => const TripsView(),
       binding: TripsBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_USER,
+      page: () => const EditUserView(),
+      binding: EditUserBinding(),
     ),
   ];
 }

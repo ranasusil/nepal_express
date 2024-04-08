@@ -21,6 +21,7 @@ abstract class Routes {
   static const ADMIN_PROFILE = _Paths.ADMIN_PROFILE;
   static const ALL_BUSES = _Paths.ALL_BUSES;
   static const TRIPS = _Paths.TRIPS;
+  static const EDIT_USER = _Paths.EDIT_USER;
 }
 
 abstract class _Paths {
@@ -43,4 +44,5 @@ abstract class _Paths {
   static const ADMIN_PROFILE = '/admin-profile';
   static const ALL_BUSES = '/all-buses';
   static const TRIPS = '/trips';
+  static const EDIT_USER = '/edit-user';
 }

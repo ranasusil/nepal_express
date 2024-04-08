@@ -36,7 +36,7 @@ class Booking {
     final String? bookingId;
     final DateTime? date;
     final String? busId;
-    final dynamic userId;
+    final String? userId;
     final String? remarks;
     final String? status;
     final String? seatId;
@@ -48,8 +48,12 @@ class Booking {
     final String? yearsUsed;
     final String? agencyId;
     final String? isDeleted;
-    final dynamic amount;
-    final dynamic details;
+    final String? isBookable;
+    final String? amount;
+    final String? details;
+    final String? tripTitle;
+    final String? cityFrom;
+    final String? cityTo;
 
     Booking({
         this.bookingId,
@@ -67,8 +71,12 @@ class Booking {
         this.yearsUsed,
         this.agencyId,
         this.isDeleted,
+        this.isBookable,
         this.amount,
         this.details,
+        this.tripTitle,
+        this.cityFrom,
+        this.cityTo,
     });
 
     factory Booking.fromJson(Map<String, dynamic> json) => Booking(
@@ -87,8 +95,12 @@ class Booking {
         yearsUsed: json["years_used"],
         agencyId: json["agency_id"],
         isDeleted: json["isDeleted"],
+        isBookable: json["isBookable"],
         amount: json["amount"],
         details: json["details"],
+        tripTitle: json["trip_title"],
+        cityFrom: json["cityFrom"],
+        cityTo: json["cityTo"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -107,7 +119,11 @@ class Booking {
         "years_used": yearsUsed,
         "agency_id": agencyId,
         "isDeleted": isDeleted,
+        "isBookable": isBookable,
         "amount": amount,
         "details": details,
+        "trip_title": tripTitle,
+        "cityFrom": cityFrom,
+        "cityTo": cityTo,
     };
 }

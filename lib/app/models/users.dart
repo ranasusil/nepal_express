@@ -1,23 +1,21 @@
-// To parse this JSON data, do
-//
-//     final usersResponse = usersResponseFromJson(jsonString);
+
 
 import 'dart:convert';
 
-UsersResponse usersResponseFromJson(String str) => UsersResponse.fromJson(json.decode(str));
+UserResponse userResponseFromJson(String str) => UserResponse.fromJson(json.decode(str));
 
-String usersResponseToJson(UsersResponse data) => json.encode(data.toJson());
+String userResponseToJson(UserResponse data) => json.encode(data.toJson());
 
-class UsersResponse {
+class UserResponse {
     final bool? success;
     final List<User>? users;
 
-    UsersResponse({
+    UserResponse({
         this.success,
         this.users,
     });
 
-    factory UsersResponse.fromJson(Map<String, dynamic> json) => UsersResponse(
+    factory UserResponse.fromJson(Map<String, dynamic> json) => UserResponse(
         success: json["success"],
         users: json["users"] == null ? [] : List<User>.from(json["users"]!.map((x) => User.fromJson(x))),
     );
@@ -35,6 +33,7 @@ class User {
     final String? email;
     final String? role;
     final String? address;
+    final String? isDeleted;
 
     User({
         this.userId,
@@ -43,6 +42,7 @@ class User {
         this.email,
         this.role,
         this.address,
+        this.isDeleted,
     });
 
     factory User.fromJson(Map<String, dynamic> json) => User(
@@ -52,6 +52,7 @@ class User {
         email: json["email"],
         role: json["role"],
         address: json["address"],
+        isDeleted: json["isDeleted"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -61,5 +62,6 @@ class User {
         "email": email,
         "role": role,
         "address": address,
+        "isDeleted": isDeleted,
     };
 }

@@ -38,6 +38,8 @@ class BookingsController extends GetxController {
     }
   }
 
+  
+
   @override
   void onReady() {
     super.onReady();

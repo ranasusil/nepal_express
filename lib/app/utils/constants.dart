@@ -1,13 +1,12 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-const ipAddress = '192.168.0.9';
+const ipAddress = '192.168.0.6';
+
 
 MaterialColor primaryColor = Colors.blueGrey;
-
 var getImageUrl = (imageUrl) {
   return 'http://$ipAddress/bus_api/$imageUrl';
 };
-
 var showCustomSnackBar = ({
   required String message,
   bool isSuccess = false,
@@ -25,7 +24,6 @@ var showCustomSnackBar = ({
         ),
         duration: const Duration(milliseconds: 1500),
         backgroundColor: isSuccess ? Colors.green : Colors.red,
-        // borderRadius: 10.w,
         snackPosition: SnackPosition.TOP,
       ),
     );

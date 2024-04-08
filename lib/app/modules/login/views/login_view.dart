@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:nepal_express/app/components/custom_button.dart';
 import 'package:nepal_express/app/components/custom_feild.dart';
 import 'package:nepal_express/app/routes/app_pages.dart';
@@ -17,7 +18,7 @@ class LoginView extends GetView<LoginController> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 20,
+              horizontal: kIsWeb ? 500 : 20,
               vertical: 40,
             ),
             child: Form(
@@ -30,10 +31,11 @@ class LoginView extends GetView<LoginController> {
                   CircleAvatar(
                     radius: 100,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
+                      borderRadius: BorderRadius.circular(kIsWeb ? 200 : 100),
                       child: Image.asset(
                         'assets/images/bus.jpg',
                         height: 250,
+                         fit: BoxFit.cover,
                       ),
                     ),
                   ),

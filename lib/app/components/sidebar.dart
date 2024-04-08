@@ -44,12 +44,9 @@ SideBar sidebar(BuildContext context) {
     items: const [
       AdminMenuItem(title: 'Dashboard', route: '/admin-home', icon: Icons.home),
       AdminMenuItem(title: 'Users', icon: Icons.people, route: '/users'),
-      AdminMenuItem(title: 'Agencies', icon: Icons.business, children: [
-        AdminMenuItem(title: 'View Agency', route: '/agency'),
-        AdminMenuItem(title: 'Add Agency'),
-      ]),
+      AdminMenuItem(title: 'Agencies', icon: Icons.business,route: '/agency'),
       AdminMenuItem(title: 'Buses', icon: Icons.train, route: '/all-buses'),
-      AdminMenuItem(title: 'Trips', icon: Icons.train, route: '/trips'),
+      AdminMenuItem(title: 'Trips', icon: Icons.map, route: '/trips'),
       AdminMenuItem(
           title: 'Profile', route: '/admin-profile', icon: Icons.person),
     ],

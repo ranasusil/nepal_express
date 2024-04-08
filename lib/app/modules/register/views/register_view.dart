@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:nepal_express/app/components/custom_button.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class RegisterView extends GetView<RegisterController> {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 20,
+               horizontal: kIsWeb ? 500 : 20,
               vertical: 40,
             ),
             child: Form(

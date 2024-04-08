@@ -4,6 +4,9 @@ import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nepal_express/app/components/sidebar.dart';
+import 'package:nepal_express/app/models/users.dart';
+import 'package:nepal_express/app/modules/edit_user/controllers/edit_user_controller.dart';
+import 'package:nepal_express/app/modules/edit_user/views/edit_user_view.dart';
 
 import '../controllers/users_controller.dart';
 
@@ -24,7 +27,7 @@ class UsersView extends GetView<UsersController> {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 2,
                 blurRadius: 4,
-                offset: const Offset(0, 3), // changes position of shadow
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -32,7 +35,7 @@ class UsersView extends GetView<UsersController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Padding(
+              Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),
                 child: Text(
                   'All Users',
@@ -77,6 +80,12 @@ class UsersView extends GetView<UsersController> {
                     DataColumn(
                         label: Text('Address',
                             style: TextStyle(fontWeight: FontWeight.bold))),
+                    DataColumn(
+                        label: Text('Is Deleted',
+                            style: TextStyle(fontWeight: FontWeight.bold))),
+                    DataColumn(
+                        label: Text('Actions',
+                            style: TextStyle(fontWeight: FontWeight.bold))),
                   ],
                   rows: List<DataRow>.generate(
                     controller.users.length,
@@ -86,12 +95,60 @@ class UsersView extends GetView<UsersController> {
                         DataCell(Text(controller.users[index].email ?? '')),
                         DataCell(Text(controller.users[index].role ?? '')),
                         DataCell(Text(controller.users[index].address ?? '')),
+                        DataCell(Text(controller.users[index].isDeleted ?? '')),
+                        DataCell(
+                          Row(
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => UpdateUserDialog(
+                                        user: controller.users[index]),
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: const Row(
+                                    children: [
+                                      Icon(Icons.edit, color: Colors.grey),
+                                      SizedBox(width: 8.0),
+                                      Text('Edit',
+                                          style: TextStyle(color: Colors.grey)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  showConfirmationDialog(context, () {
+                                    controller.deleteUser(
+                                        controller.users[index].userId ?? '');
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: const Row(
+                                    children: [
+                                      Icon(Icons.delete, color: Colors.red),
+                                      SizedBox(width: 8.0),
+                                      Text('Delete',
+                                          style: TextStyle(color: Colors.red)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
-
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -99,9 +156,9 @@ class UsersView extends GetView<UsersController> {
                     onPressed: () => controller.previousPage(),
                     child: const Text('Previous'),
                   ),
-                   const SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Text('Page ${controller.currentPage}'),
-                   const SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () => controller.nextPage(),
                     child: const Text('Next'),
@@ -112,6 +169,32 @@ class UsersView extends GetView<UsersController> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> showConfirmationDialog(
+      BuildContext context, Function onConfirm) async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmation'),
+          content: const Text('Are you sure you want to perform this action?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                onConfirm();
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -259,6 +342,65 @@ class AddUserDialog extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class UpdateUserDialog extends StatelessWidget {
+  final User user;
+
+  const UpdateUserDialog({Key? key, required this.user}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final TextEditingController fullNameController =
+        TextEditingController(text: user.fullName);
+    final TextEditingController emailController =
+        TextEditingController(text: user.email);
+    final TextEditingController addressController =
+        TextEditingController(text: user.address);
+
+    return AlertDialog(
+      title: const Text('Update User Details'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextFormField(
+              controller: fullNameController,
+              decoration: const InputDecoration(labelText: 'Full Name'),
+            ),
+            TextFormField(
+              controller: emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+            ),
+            TextFormField(
+              controller: addressController,
+              decoration: const InputDecoration(labelText: 'Address'),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+          onPressed: () {
+            UsersController controller = Get.find<UsersController>();
+            controller.updateUserDetails(
+              user.userId ?? '',
+              fullNameController.text,
+              emailController.text,
+              addressController.text,
+            );
+            Get.back();
+          },
+          child: const Text('Update'),
+        ),
+        ElevatedButton(
+          onPressed: () => Get.back(),
+          child: const Text('Cancel'),
+        ),
+      ],
     );
   }
 }

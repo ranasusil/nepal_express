@@ -100,9 +100,6 @@ class BusDetailController extends GetxController {
     });
   }
 
-
-
-
 Future<void> bookSeat(int? seatId) async {
   if (seatId == null) {
     // Handle the case where seatId is null
@@ -120,39 +117,23 @@ Future<void> bookSeat(int? seatId) async {
 
     final result = jsonDecode(response.body);
     if (result['success']) {
-      await makePayment(result['booking_id'].toString());
-      // updateSeatAvailability(seatId, 0);
+      await makeSeatPayment(result['seat_booking_id'].toString());
     } else {
       if (result['message'] == 'Seat is already booked!') {
-        // Show snackbar indicating the seat is already booked
         Get.snackbar(
           'Seat Booking',
           'The selected seat is already booked.',
           snackPosition: SnackPosition.BOTTOM,
         );
       } else {
-        // Show other error messages
         showCustomSnackBar(message: result['message']);
       }
-    }
-
-    if (result['success']) {
-      await makePayment(result['booking_id'].toString());
-    } else {
-      showCustomSnackBar(
-        message: result['message'],
-      );
     }
   } catch (e) {
     showCustomSnackBar(message: 'Error booking seat: $e');
   }
 }
 
-
-void updateSeatAvailability(int index, int availability) {
-  seats[index].availability = availability;
-  update();
-}
 
   void navigateToMakeSeatBookingPage() {
     Get.to(() => MakeSeatBookingPage(

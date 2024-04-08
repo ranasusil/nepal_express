@@ -12,6 +12,8 @@ class UsersController extends GetxController {
   var fullNameController = TextEditingController();
   var addressController = TextEditingController();
   var registerFormKey = GlobalKey<FormState>();
+  final selectedUser = User().obs; // Observable for storing selected user data
+
   String roleValue = 'user';
   static const int usersPerPage = 10; // Static member for total users per page
   var users = <User>[].obs;
@@ -79,7 +81,8 @@ class UsersController extends GetxController {
         var jsonData = jsonDecode(response.body);
         if (jsonData['success']) {
           List<dynamic> usersData = jsonData['users'];
-          users.assignAll(usersData.map((userData) => User.fromJson(userData)).toList());
+          users.assignAll(
+              usersData.map((userData) => User.fromJson(userData)).toList());
         } else {
           print('API Error: ${jsonData['message']}');
         }
@@ -90,6 +93,84 @@ class UsersController extends GetxController {
       print('Error: $e');
     }
   }
+
+  void deleteUser(String userId) async {
+    try {
+      var url = Uri.http(ipAddress, 'bus_api/deleteUser.php');
+
+      var response = await http.post(url, body: {
+        'token': Memory.getToken(),
+        'user_id': userId,
+      });
+
+      var result = jsonDecode(response.body);
+
+      if (result['success']) {
+        // Get.back();
+        showCustomSnackBar(
+          message: result['message'],
+          isSuccess: true,
+        );
+
+        getUsers();
+      } else {
+        showCustomSnackBar(
+          message: result['message'],
+        );
+      }
+    } catch (e) {
+      showCustomSnackBar(
+        message: 'Something went wrong',
+      );
+    }
+  }
+  void fetchUserById(String userId) async {
+  try {
+    var url = Uri.http(ipAddress, 'bus_api/getUserById.php', {'user_id': userId});
+    var response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      if (jsonData['success']) {
+        var userData = jsonData['user'];
+        var user = User.fromJson(userData);
+        // Update the user details in the controller
+        selectedUser.value = user;
+      } else {
+        print('API Error: ${jsonData['message']}');
+      }
+    } else {
+      print('HTTP Error: ${response.reasonPhrase}');
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
+}
+
+void updateUserDetails(String userId, String fullName, String email, String address) async {
+  try {
+    var url = Uri.http(ipAddress, 'bus_api/editUser.php');
+    var response = await http.post(url, body: {
+      'token': Memory.getToken(),
+      'user_id': userId,
+      'fullname': fullName,
+      'email': email,
+      'address': address,
+    });
+
+    var result = jsonDecode(response.body);
+
+    if (result['success']) {
+      getUsers(); 
+      showCustomSnackBar(message: result['message'], isSuccess: true);
+    } else {
+      showCustomSnackBar(message: result['message']);
+    }
+  } catch (e) {
+    showCustomSnackBar(message: 'Error: $e');
+  }
+}
+
 
   void nextPage() {
     currentPage++;
