@@ -4,6 +4,7 @@ import 'package:nepal_express/app/components/bus_card.dart';
 import 'package:nepal_express/app/components/city_card.dart';
 import 'package:nepal_express/app/models/bus.dart';
 import 'package:nepal_express/app/modules/home/views/pokhara.dart';
+import 'package:nepal_express/app/modules/notification/controllers/notification_controller.dart';
 import 'package:nepal_express/app/utils/constants.dart';
 import 'package:nepal_express/app/utils/memory.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,9 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     Get.put(HomeController());
+    final NotificationController notificationController =
+        Get.put(NotificationController());
+
     return Scaffold(
       appBar: AppBar(
         // title: const Text('HomeView'),
@@ -34,12 +38,21 @@ class HomeView extends GetView<HomeController> {
             },
             icon: const Icon(Icons.search),
           ),
-          // IconButton(
-          //   onPressed: () async {
-          //     Get.toNamed(Routes.NOTIFICATION);
-          //   },
-          //   icon: const Icon(Icons.notifications),
-          // )
+          Obx(() {
+            final bool hasNewNotification =
+                notificationController.hasNewNotification.value;
+            return IconButton(
+              onPressed: () async {
+                Get.toNamed(Routes.NOTIFICATION);
+              },
+              icon: hasNewNotification
+                  ? Badge(
+                      label: Text("1"),
+                      child: Icon(Icons.notifications),
+                    )
+                  : Icon(Icons.notifications),
+            );
+          }),
         ],
       ),
       body: RefreshIndicator(
@@ -212,7 +225,6 @@ class HomeView extends GetView<HomeController> {
                               Get.to(() => const Pokhara());
                             },
                           ),
-                          
                         ],
                       ),
                     ),

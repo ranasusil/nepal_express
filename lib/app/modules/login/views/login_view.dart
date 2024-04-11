@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+
 import 'package:nepal_express/app/components/custom_button.dart';
 import 'package:nepal_express/app/components/custom_feild.dart';
 import 'package:nepal_express/app/routes/app_pages.dart';
@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../controllers/login_controller.dart';
-
+import 'package:flutter/foundation.dart';
 class LoginView extends GetView<LoginController> {
   const LoginView({Key? key}) : super(key: key);
   @override

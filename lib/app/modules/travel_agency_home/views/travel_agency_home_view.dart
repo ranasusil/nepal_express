@@ -15,11 +15,15 @@ class TravelAgencyHomeView extends GetView<TravelAgencyHomeController> {
         title: const Text('TravelAgencyHomeView'),
         centerTitle: true,
       ),
-      body: const Center(
-        child: Text(
-          'TravelAgencyHomeView is working',
-          style: TextStyle(fontSize: 20),
-        ),
+      body: Column(
+        children: [
+          const Center(
+            child: Text(
+              'TravelAgencyHomeView is working',
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+        ],
       ),
     );
   }

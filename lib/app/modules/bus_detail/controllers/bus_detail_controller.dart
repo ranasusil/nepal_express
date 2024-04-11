@@ -117,7 +117,7 @@ Future<void> bookSeat(int? seatId) async {
 
     final result = jsonDecode(response.body);
     if (result['success']) {
-      await makeSeatPayment(result['seat_booking_id'].toString());
+      await makePayment(result['seat_booking_id'].toString());
     } else {
       if (result['message'] == 'Seat is already booked!') {
         Get.snackbar(

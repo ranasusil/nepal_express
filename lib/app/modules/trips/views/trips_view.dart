@@ -50,7 +50,7 @@ class TripsView extends GetView<TripsController> {
                   child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('Add Trip'), // Add text to the button if needed
+                      Text('Add Trip'),
                       Icon(Icons.add),
                     ],
                   ),
