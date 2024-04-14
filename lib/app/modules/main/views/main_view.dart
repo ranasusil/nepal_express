@@ -25,7 +25,7 @@ class MainView extends GetView<MainController> {
             items: [
               FloatingNavbarItem(icon: Icons.home, title: 'Home'),
               FloatingNavbarItem(icon: Icons.list, title: 'Bookings'),
-              // FloatingNavbarItem(icon: Icons.people, title: 'Doctors'),
+              FloatingNavbarItem(icon: Icons.mail_outline_outlined, title: 'Feedback'),
               FloatingNavbarItem(icon: Icons.person, title: 'Profile'),
               
             ],

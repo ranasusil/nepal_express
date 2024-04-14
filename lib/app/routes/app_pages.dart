@@ -20,6 +20,10 @@ import '../modules/detail_category/bindings/detail_category_binding.dart';
 import '../modules/detail_category/views/detail_category_view.dart';
 import '../modules/edit_user/bindings/edit_user_binding.dart';
 import '../modules/edit_user/views/edit_user_view.dart';
+import '../modules/feedback/bindings/feedback_binding.dart';
+import '../modules/feedback/views/feedback_view.dart';
+import '../modules/feedbacks/bindings/feedbacks_binding.dart';
+import '../modules/feedbacks/views/feedbacks_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -148,6 +152,16 @@ class AppPages {
       name: _Paths.NOTIFICATION,
       page: () => const NotificationView(),
       binding: NotificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.FEEDBACK,
+      page: () => FeedbackView(),
+      binding: FeedbackBinding(),
+    ),
+    GetPage(
+      name: _Paths.FEEDBACKS,
+      page: () => const FeedbacksView(),
+      binding: FeedbacksBinding(),
     ),
   ];
 }

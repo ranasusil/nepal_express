@@ -25,7 +25,7 @@ class TravelAgencyMainView extends GetView<TravelAgencyMainController> {
             items: [
               FloatingNavbarItem(icon: Icons.home, title: 'Home'),
               FloatingNavbarItem(icon: Icons.list, title: 'Bookings'),
-              FloatingNavbarItem(icon: Icons.people, title: 'Buses'),
+              FloatingNavbarItem(icon: Icons.car_rental, title: 'Buses'),
               FloatingNavbarItem(icon: Icons.person, title: 'Profile'),
             ],
           ),

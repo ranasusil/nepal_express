@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-const ipAddress = '192.168.0.9';
-
+const ipAddress = '192.168.1.71';
 
 MaterialColor primaryColor = Colors.blueGrey;
 var getImageUrl = (imageUrl) {
@@ -27,3 +26,5 @@ var showCustomSnackBar = ({
         snackPosition: SnackPosition.TOP,
       ),
     );
+
+    

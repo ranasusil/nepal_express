@@ -47,6 +47,7 @@ SideBar sidebar(BuildContext context) {
       AdminMenuItem(title: 'Agencies', icon: Icons.business,route: '/agency'),
       AdminMenuItem(title: 'Buses', icon: Icons.train, route: '/all-buses'),
       AdminMenuItem(title: 'Trips', icon: Icons.map, route: '/trips'),
+      AdminMenuItem(title: 'Feedbacks', icon: Icons.mail_outline, route: '/feedbacks'),
       AdminMenuItem(
           title: 'Profile', route: '/admin-profile', icon: Icons.person),
     ],

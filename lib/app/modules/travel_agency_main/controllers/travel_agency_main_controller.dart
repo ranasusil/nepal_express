@@ -5,7 +5,7 @@ import 'package:nepal_express/app/modules/bus/views/bus_view.dart';
 import 'package:nepal_express/app/modules/travel_agency_home/views/travel_agency_home_view.dart';
 import 'package:nepal_express/app/modules/profile/views/profile_view.dart';
 class TravelAgencyMainController extends GetxController {
-  //TODO: Implement TravelAgencyMainController
+
   var currentIndex = 0.obs;
   List<Widget> screens = [
 

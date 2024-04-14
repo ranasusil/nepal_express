@@ -5,7 +5,6 @@ import 'package:nepal_express/app/models/notification.dart' as AppModels; // Imp
 import 'package:nepal_express/app/models/notification.dart';
 
 import '../controllers/notification_controller.dart';
-
 class NotificationView extends GetView<NotificationController> {
   const NotificationView({Key? key}) : super(key: key);
 
@@ -38,13 +37,22 @@ class NotificationView extends GetView<NotificationController> {
               var formattedDate = DateFormat("yyyy-MM-dd hh:mm aa").format(notif.createdAt!);
 
               // Check if notification is clicked (isClicked = 1), change container color accordingly
-              Color containerColor = notif.isClicked == '1' ? Colors.white : Colors.lightBlue;
+              Color containerColor = notif.isClicked == '1' ? Colors.white : const Color.fromARGB(255, 140, 176, 192);
 
               return GestureDetector(
                 onTap: () {
-                  // Update isClicked property when container is tapped
+                  // Update isClicked property when container is tapped in the UI
                   controller.notificationResponse!.notifications![index].isClicked = '1';
                   controller.update(); // Update UI
+
+                  // Call clickNotification function to update backend
+                  String? notificationId = notif.notificationId; // Nullable
+                  if (notificationId != null) {
+                    controller.clickNotification(notificationId);
+                  } else {
+                    // Handle null notificationId, e.g., show an error message
+                    print('Notification ID is null');
+                  }
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(vertical: 8),

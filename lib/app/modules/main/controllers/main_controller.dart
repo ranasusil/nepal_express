@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:nepal_express/app/modules/bookings/views/bookings_view.dart';
+import 'package:nepal_express/app/modules/feedback/views/feedback_view.dart';
 import 'package:nepal_express/app/modules/home/views/home_view.dart';
 import 'package:nepal_express/app/modules/profile/views/profile_view.dart';
 class MainController extends GetxController {
@@ -9,7 +10,9 @@ class MainController extends GetxController {
   List<Widget> screens = [
     HomeView(),
     BookingsView(),
+    FeedbackView(),
     ProfileView(),
+
 
   ];
   final count = 0.obs;

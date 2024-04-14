@@ -10,6 +10,7 @@ StatsResponse? statsResponse;
   @override
   void onInit() {
     super.onInit();
+    getStats();
   }
 
   @override
@@ -50,4 +51,5 @@ StatsResponse? statsResponse;
       );
     }
   }
+
 }

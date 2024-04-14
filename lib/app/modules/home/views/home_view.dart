@@ -27,7 +27,7 @@ class HomeView extends GetView<HomeController> {
       appBar: AppBar(
         // title: const Text('HomeView'),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(155, 179, 208, 228),
+        backgroundColor: Color.fromARGB(155, 156, 184, 202),
         title: const Text(
           'Nepal Express',
         ),

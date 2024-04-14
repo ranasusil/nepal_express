@@ -3,12 +3,13 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nepal_express/app/models/bus.dart';
+import 'package:nepal_express/app/models/seat.dart';
 import 'package:nepal_express/app/models/trip.dart';
 import 'package:nepal_express/app/utils/constants.dart';
 import 'package:nepal_express/app/utils/memory.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-// import 'package:nepal_express/app/modules/home/controllers/home_controller.dart';
+
 class BusController extends GetxController {
     BusesResponse? busesResponse;
   TripResponse? tripResponse;
@@ -98,6 +99,9 @@ class BusController extends GetxController {
     );
   }
 }
+
+
+
 void deleteBus(String busId) async {
   try {
     var url = Uri.http(ipAddress, 'bus_api/deleteBus.php');
@@ -176,6 +180,89 @@ void deleteBus(String busId) async {
       // Error handling
     }
   }
+  final RxList<Seat> seats = <Seat>[].obs;
+
+  Future<void> getSeatsForBus(String busId, String token) async {
+    try {
+      Uri url = Uri.http(ipAddress, 'bus_api/getSeats.php');
+
+      var response = await http.post(url, body: {'token': token, 'bus_id': busId});
+
+      var result = SeatResponse.fromJson(jsonDecode(response.body));
+
+      if (result.success == true) {
+        seats.value = result.seats!
+            .map((seat) => Seat(
+                  seatId: seat.seatId,
+                  seatNumber: seat.seatNumber,
+                  availability: seat.availability,
+                  busId: seat.busId,
+                ))
+            .toList();
+      } else {
+        showCustomSnackBar(
+            message: result.message ?? 'Failed to fetch the seats');
+      }
+    } catch (e) {
+      showCustomSnackBar(message: 'Error fetching seats: $e');
+    }
+  }
+  void resetSeats(String busId) async {
+  try {
+    var url = Uri.http(ipAddress, 'bus_api/resetSeats.php');
+
+    var response = await http.post(url, body: {
+      'token': Memory.getToken(),
+      'bus_id': busId,
+    });
+
+    var result = jsonDecode(response.body);
+
+    if (result['success']) {
+      showCustomSnackBar(
+        message: result['message'],
+        isSuccess: true,
+      );
+      // Call the getSeatsForBus method directly from the BusController
+      getSeatsForBus(busId, Memory.getToken() ?? '');
+    } else {
+      showCustomSnackBar(
+        message: result['message'],
+      );
+    }
+  } catch (e) {
+    showCustomSnackBar(
+      message: 'Something went wrong',
+    );
+  }
+}
+ Future<void> resetBusBookingStatus(String busId) async {
+    try {
+      var url = Uri.http(ipAddress, 'bus_api/resetBusBookingStatus.php');
+      var response = await http.post(url, body: {
+        'token': Memory.getToken() ?? '',
+        'bus_id': busId,
+      });
+
+      var result = jsonDecode(response.body);
+
+      if (result['success']) {
+        showCustomSnackBar(
+          message: result['message'],
+          isSuccess: true,
+        );
+      } else {
+        showCustomSnackBar(
+          message: result['message'],
+        );
+      }
+    } catch (e) {
+      showCustomSnackBar(
+        message: 'Error resetting bus booking status: $e',
+      );
+    }
+  }
+
     void refreshPage() {
     // Trigger an update to refresh the page
     update();

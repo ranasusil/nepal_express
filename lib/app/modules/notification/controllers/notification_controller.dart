@@ -46,7 +46,23 @@ Future<void> getNotification() async {
     );
   }
 }
+ Future<void> clickNotification(String notificationId) async {
+    try {
+      var url = Uri.http(ipAddress, 'bus_api/clickNotification.php');
+      var response = await http.post(url, body: {
+        "token": Memory.getToken(),
+        "notification_id": notificationId,
+      });
 
+      // Handle the response as needed
+      print(response.body);
+    } catch (e) {
+      print(e);
+      showCustomSnackBar(
+        message: 'Failed to update notification',
+      );
+    }
+  }
 
 
   void increment() => count.value++;
