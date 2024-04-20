@@ -58,7 +58,7 @@ class BusDetailView extends GetView<BusDetailController> {
                                 decoration: TextDecoration.underline)),
                         Row(
                           children: [
-                            Text("Bus's Name: ",
+                            Text("Bus's Name:  ",
                                 style: GoogleFonts.almarai(
                                   fontSize: 25,
                                   // fontWeight: FontWeight.bold,
@@ -67,7 +67,7 @@ class BusDetailView extends GetView<BusDetailController> {
                               bus?.name ?? '',
                               style: GoogleFonts.encodeSans(
                                 fontSize: 20,
-                                fontStyle: FontStyle.italic,
+                                fontStyle: FontStyle.normal,
                                 letterSpacing: 4,
                                 wordSpacing: 2,
                               ),
@@ -76,7 +76,7 @@ class BusDetailView extends GetView<BusDetailController> {
                         ),
                         Row(
                           children: [
-                            Text("Trip: ",
+                            Text("Trip:  ",
                                 style: GoogleFonts.almarai(
                                   fontSize: 25,
                                   // fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class BusDetailView extends GetView<BusDetailController> {
                               bus?.title ?? '',
                               style: GoogleFonts.encodeSans(
                                 fontSize: 20,
-                                fontStyle: FontStyle.italic,
+                                fontStyle: FontStyle.normal,
                                 letterSpacing: 4,
                                 wordSpacing: 2,
                               ),
@@ -94,16 +94,17 @@ class BusDetailView extends GetView<BusDetailController> {
                         ),
                         Row(
                           children: [
-                            Text("Bus's Fair: ",
+                            Text("Bus's Fair:  ",
                                 style: GoogleFonts.almarai(
                                   fontSize: 25,
                                   // fontWeight: FontWeight.bold,
                                 )),
                             Text(
                               bus?.fair ?? '',
-                              style: GoogleFonts.encodeSans(
+                              style: GoogleFonts.bebasNeue(
                                 fontSize: 20,
-                                fontStyle: FontStyle.italic,
+                                color: Color.fromARGB(255, 128, 139, 227),
+                                fontStyle: FontStyle.normal,
                                 letterSpacing: 4,
                                 wordSpacing: 2,
                               ),
@@ -112,7 +113,44 @@ class BusDetailView extends GetView<BusDetailController> {
                         ),
                         Row(
                           children: [
-                            Text("Agency's Name: ",
+                            Text("Departure Day:  ",
+                                style: GoogleFonts.almarai(
+                                  fontSize: 25,
+                                  // fontWeight: FontWeight.bold,
+                                )),
+                            Text(
+                              bus?.departureDay ?? '',
+                              style: GoogleFonts.ubuntu(
+                                fontSize: 20,
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: 4,
+                                wordSpacing: 2,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("Bus's Time:  ",
+                                style: GoogleFonts.almarai(
+                                  fontSize: 25,
+                                  // fontWeight: FontWeight.bold,
+                                )),
+                            Text(
+                              bus?.departureTime ?? '',
+                              style: GoogleFonts.ubuntu(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 87, 160, 94),
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: 4,
+                                wordSpacing: 2,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("Agency's Name:  ",
                                 style: GoogleFonts.almarai(
                                   fontSize: 25,
                                   // fontWeight: FontWeight.bold,
@@ -121,7 +159,7 @@ class BusDetailView extends GetView<BusDetailController> {
                               bus?.agencyName ?? '',
                               style: GoogleFonts.encodeSans(
                                 fontSize: 20,
-                                fontStyle: FontStyle.italic,
+                                fontStyle: FontStyle.normal,
                                 letterSpacing: 4,
                                 wordSpacing: 2,
                               ),
@@ -130,7 +168,7 @@ class BusDetailView extends GetView<BusDetailController> {
                         ),
                         Row(
                           children: [
-                            Text("Agency's Address: ",
+                            Text("Agency's Address:  ",
                                 style: GoogleFonts.almarai(
                                   fontSize: 25,
                                   // fontWeight: FontWeight.bold,
@@ -139,7 +177,7 @@ class BusDetailView extends GetView<BusDetailController> {
                               bus?.agencyAddress ?? '',
                               style: GoogleFonts.encodeSans(
                                 fontSize: 20,
-                                fontStyle: FontStyle.italic,
+                                fontStyle: FontStyle.normal,
                                 letterSpacing: 4,
                                 wordSpacing: 2,
                               ),
@@ -148,7 +186,7 @@ class BusDetailView extends GetView<BusDetailController> {
                         ),
                         Row(
                           children: [
-                            Text("Agency's Email: ",
+                            Text("Agency's Email:  ",
                                 style: GoogleFonts.almarai(
                                   fontSize: 25,
                                   // fontWeight: FontWeight.bold,
@@ -157,7 +195,7 @@ class BusDetailView extends GetView<BusDetailController> {
                               bus?.agencyEmail ?? '',
                               style: GoogleFonts.encodeSans(
                                 fontSize: 20,
-                                fontStyle: FontStyle.italic,
+                                fontStyle: FontStyle.normal,
                                 letterSpacing: 4,
                                 wordSpacing: 2,
                               ),
@@ -504,7 +542,6 @@ class MakeSeatBookingPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-             
               const SizedBox(height: 15.0),
               Expanded(
                 child: GridView.builder(

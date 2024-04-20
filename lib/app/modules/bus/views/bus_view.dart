@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nepal_express/app/models/bus.dart';
 import 'package:nepal_express/app/models/seat.dart';
 import 'package:nepal_express/app/utils/constants.dart';
 import 'package:nepal_express/app/utils/memory.dart';
@@ -43,97 +44,99 @@ class BusView extends StatelessWidget {
                       horizontal: 12,
                       vertical: 15,
                     ),
-                    child: Row(
-                      children: [
-                        Image.network(
-                          getImageUrl(bus.avatar),
-                          width: 100,
-                        ),
-                        const SizedBox(width: 20),
-                        SizedBox(
-                          height: 75,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Text(
-                                    (bus.name ?? ''),
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  if (bus.isDeleted ==
-                                      '1') // Add this condition to show deleted text
+                    child: SingleChildScrollView(
+                      child: Row(
+                        children: [
+                          Image.network(
+                            getImageUrl(bus.avatar),
+                            width: 100,
+                          ),
+                          const SizedBox(width: 20),
+                          SizedBox(
+                            height: 75,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
                                     Text(
-                                      ' (Deleted)',
+                                      (bus.name ?? ''),
                                       style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.red,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                ],
-                              ),
-                              Text(
-                                bus.title ?? '',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Text(
-                                bus.fair ?? '',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          onPressed: () {
-                            print(
-                                'isDeleted inside IconButton: ${bus.isDeleted}');
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text(bus.isDeleted == '0'
-                                      ? 'Delete bus'
-                                      : 'Restore Bus'),
-                                  content: Text(bus.isDeleted == '0'
-                                      ? "Are you sure want to delete?"
-                                      : "Are you sure want to restore?"),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Get.back();
-                                        if (bus.isDeleted == '0') {
-                                          busController.deleteBus(bus.id ?? '');
-                                        } else {
-                                          // Code to restore bus
-                                        }
-                                      },
-                                      child: const Text('Yes'),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Get.back();
-                                      },
-                                      child: const Text('No'),
-                                    ),
+                                    if (bus.isDeleted == '1')
+                                      const Text(
+                                        ' (Deleted)',
+                                        style: TextStyle(
+                                          fontSize: 8,
+                                          color: Colors.red,
+                                        ),
+                                      ),
                                   ],
-                                );
-                              },
-                            );
-                          },
-                          icon: bus.isDeleted == '1'
-                              ? const Icon(Icons.restore, color: Colors.green)
-                              : const Icon(Icons.delete, color: Colors.red),
-                        ),
-                      ],
+                                ),
+                                Text(
+                                  bus.title ?? '',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  bus.fair ?? '',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Spacer(),
+                          IconButton(
+                            onPressed: () {
+                              print(
+                                  'isDeleted inside IconButton: ${bus.isDeleted}');
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text(bus.isDeleted == '0'
+                                        ? 'Delete bus'
+                                        : 'Restore Bus'),
+                                    content: Text(bus.isDeleted == '0'
+                                        ? "Are you sure want to delete?"
+                                        : "Are you sure want to restore?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Get.back();
+                                          if (bus.isDeleted == '0') {
+                                            busController
+                                                .deleteBus(bus.id ?? '');
+                                          } else {
+                                            // Code to restore bus
+                                          }
+                                        },
+                                        child: const Text('Yes'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        child: const Text('No'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            icon: bus.isDeleted == '1'
+                                ? const Icon(Icons.restore, color: Colors.green)
+                                : const Icon(Icons.delete, color: Colors.red),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -155,7 +158,6 @@ class BusView extends StatelessWidget {
     );
   }
 }
-
 class BusDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -172,56 +174,86 @@ class BusDetailsView extends StatelessWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  // Call the resetSeats function from the BusController
-                  controller.resetBusBookingStatus(busId);
-                },
-                child: Text('Reset Bus Booking Status'),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Call the resetSeats function from the BusController
-                  controller.resetSeats(busId);
-                },
-                child: Text('Reset Seats'),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Seat Data:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              Obx(() {
-                if (controller.seats.isEmpty) {
-                  return Text('No seat data available.');
-                } else {
-                  return DataTable(
-                    columns: [
-                      DataColumn(label: Text('Seat Number')),
-                      DataColumn(label: Text('Availability')),
-                    ],
-                    rows: controller.seats.map((seat) {
-                      return DataRow(cells: [
-                        DataCell(Text(seat.seatNumber ?? '')),
-                        DataCell(Text(
-                            seat.availability == 1 ? 'Available' : 'Booked')),
-                      ]);
-                    }).toList(),
-                  );
-                }
-              }),
-            ],
+          child: Form(
+            key: controller.formKey, // Initialize the formKey here
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+               
+              SizedBox(height: 20,),
+                ElevatedButton(
+                  onPressed: () {
+                    // Call the resetBusBookingStatus function from the BusController
+                    controller.resetBusBookingStatus(busId);
+                  },
+                  child: Text('Reset Bus Booking Status'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    // Call the resetSeats function from the BusController
+                    controller.resetSeats(busId);
+                  },
+                  child: Text('Reset Seats'),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Seat Data:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20),
+                Obx(() {
+                  if (controller.seats.isEmpty) {
+                    return Text('No seat data available.');
+                  } else {
+                    return DataTable(
+                      columns: [
+                        DataColumn(label: Text('Seat Number')),
+                        DataColumn(label: Text('Availability')),
+                      ],
+                      rows: controller.seats.map((seat) {
+                        return DataRow(cells: [
+                          DataCell(Text(seat.seatNumber ?? '')),
+                          DataCell(Text(
+                              seat.availability == 1 ? 'Available' : 'Booked')),
+                        ]);
+                      }).toList(),
+                    );
+                  }
+                }),
+                SizedBox(height: 20),
+                TextFormField(
+                  controller: controller.seatNumberController,
+                  decoration: InputDecoration(labelText: 'Enter Seat Number'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a seat number';
+                    }
+                    return null;
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Call the addSeat function from the BusController
+                    if (controller.formKey.currentState!.validate()) {
+                      controller.addSeat(
+                        busId,
+                        Memory.getToken() ?? '',
+                        controller.seatNumberController.text,
+                      );
+                    }
+                  },
+                  child: Text('Add Seat'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
+
 
 class AddBusPopup extends StatelessWidget {
   const AddBusPopup({Key? key}) : super(key: key);
@@ -342,7 +374,7 @@ class AddBusPopup extends StatelessWidget {
                       controller.tripId = value;
                     },
                     value: controller.tripId,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Trip',
                       hintText: 'Select bus trip',
                     ),

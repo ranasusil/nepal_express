@@ -1,3 +1,4 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nepal_express/app/models/bus.dart';
 
 import 'package:nepal_express/app/routes/app_pages.dart';
@@ -61,6 +62,23 @@ class BusCard extends StatelessWidget {
                     Text(bus.agencyAddress ?? ''),
                     Text(bus.agencyEmail ?? ''),
                     Text(
+                      bus.departureDay ?? '',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      bus.departureTime ?? '',
+                      style: GoogleFonts.ubuntu(
+                        fontSize: 15,
+                        color: Color.fromARGB(255, 87, 160, 94),
+                        fontStyle: FontStyle.normal,
+                        letterSpacing: 4,
+                        wordSpacing: 2,
+                      ),
+                    ),
+                    Text(
                       "Fair: Rs.${bus.fair}" ?? '',
                       style: const TextStyle(
                         fontSize: 16,
@@ -74,14 +92,13 @@ class BusCard extends StatelessWidget {
                       },
                       child: Text('View Bus'),
                       style: ElevatedButton.styleFrom(
-                        primary:
-                            Color.fromARGB(208, 92, 117, 143), // background color
+                        primary: Color.fromARGB(
+                            208, 92, 117, 143), // background color
                         onPrimary: const Color.fromARGB(
                             255, 255, 255, 255), // text color
                         elevation: 5, // button's elevation when it's pressed
                       ),
                     ),
-                   
                   ],
                 ),
               ),

@@ -65,7 +65,7 @@ class CityCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      text,  // Use the provided text parameter here
+                      text,
                       style: GoogleFonts.arsenal(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class CityCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      text2,  // Use the provided text parameter here
+                      text2,
                       style: GoogleFonts.arsenal(
                         fontSize: 15,
                         color: Colors.white,

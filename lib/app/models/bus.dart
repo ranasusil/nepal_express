@@ -1,4 +1,6 @@
-
+// To parse this JSON data, do
+//
+//     final busesResponse = busesResponseFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -40,7 +42,11 @@ class Bus {
     final String? agencyId;
     final String? isDeleted;
     final String? isBookable;
+    final String? departureTime;
+    final String? departureDay;
     final String? title;
+    final String? cityFrom;
+    final String? cityTo;
     final String? agencyName;
     final String? agencyEmail;
     final String? agencyAddress;
@@ -55,7 +61,11 @@ class Bus {
         this.agencyId,
         this.isDeleted,
         this.isBookable,
+        this.departureTime,
+        this.departureDay,
         this.title,
+        this.cityFrom,
+        this.cityTo,
         this.agencyName,
         this.agencyEmail,
         this.agencyAddress,
@@ -71,7 +81,11 @@ class Bus {
         agencyId: json["agency_id"],
         isDeleted: json["isDeleted"],
         isBookable: json["isBookable"],
+        departureTime: json["departure_time"],
+        departureDay: json["departure_day"],
         title: json["title"],
+        cityFrom: json["cityFrom"],
+        cityTo: json["cityTo"],
         agencyName: json["agency_name"],
         agencyEmail: json["agency_email"],
         agencyAddress: json["agency_address"],
@@ -87,7 +101,11 @@ class Bus {
         "agency_id": agencyId,
         "isDeleted": isDeleted,
         "isBookable": isBookable,
+        "departure_time": departureTime,
+        "departure_day": departureDay,
         "title": title,
+        "cityFrom": cityFrom,
+        "cityTo": cityTo,
         "agency_name": agencyName,
         "agency_email": agencyEmail,
         "agency_address": agencyAddress,

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nepal_express/app/components/bus_card.dart';
 import 'package:nepal_express/app/components/city_card.dart';
 import 'package:nepal_express/app/models/bus.dart';
+import 'package:nepal_express/app/modules/home/views/kathmandu.dart';
 import 'package:nepal_express/app/modules/home/views/pokhara.dart';
 import 'package:nepal_express/app/modules/notification/controllers/notification_controller.dart';
 import 'package:nepal_express/app/utils/constants.dart';
@@ -172,7 +173,7 @@ class HomeView extends GetView<HomeController> {
                               text2: 'Bagmati',
                             ),
                             onTap: () {
-                              Get.to(() => const Pokhara());
+                              Get.to(() => const Kathmandu());
                             },
                           ),
                           InkWell(
@@ -264,39 +265,49 @@ class SearchView extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     var homeController = Get.find<HomeController>();
     List<Bus> suggestions = [];
-    // suggestions = query.isEmpty
-    //     ? []
-    //     : homeController.doctorsResponse?.doctors
-    //             ?.where((doctor) =>
-    //                 (doctor.name
-    //                         ?.toLowerCase()
-    //                         .contains(query.toLowerCase()) ??
-    //                     false) ||
-    //                 (doctor.hospitalName
-    //                         ?.toLowerCase()
-    //                         .contains(query.toLowerCase()) ??
-    //                     false) ||
-    //                 (doctor.title
-    //                         ?.toLowerCase()
-    //                         .contains(query.toLowerCase()) ??
-    //                     false) ||
-    //                 (doctor.consultationCharge
-    //                         ?.toLowerCase()
-    //                         .contains(query.toLowerCase()) ??
-    //                     false))
-    //             .toList() ??
-    //         [];
+    suggestions = query.isEmpty
+        ? []
+        : homeController.busesResponse?.buses
+                ?.where((bus) =>
+                    (bus.name?.toLowerCase().contains(query.toLowerCase()) ??
+                        false) ||
+                    (bus.agencyName
+                            ?.toLowerCase()
+                            .contains(query.toLowerCase()) ??
+                        false) ||
+                    (bus.title?.toLowerCase().contains(query.toLowerCase()) ??
+                        false) ||
+                    (bus.cityTo
+                            ?.toLowerCase()
+                            .contains(query.toLowerCase()) ??
+                        false) ||
+                        (bus.departureDay
+                            ?.toLowerCase()
+                            .contains(query.toLowerCase()) ??
+                        false) ||
+                        (bus.departureTime
+                            ?.toLowerCase()
+                            .contains(query.toLowerCase()) ??
+                        false) ||
+                    (bus.cityFrom
+                            ?.toLowerCase()
+                            .contains(query.toLowerCase()) ??
+                        false) ||
+                    (bus.fair?.toLowerCase().contains(query.toLowerCase()) ??
+                        false))
+                .toList() ??
+            [];
     var newQuery = query.toLowerCase().trim();
-    suggestions = homeController.busesResponse?.buses
-            ?.where(
-              (bus) =>
-                  (bus.name?.toLowerCase().contains(newQuery) ?? false) ||
-                  (bus.agencyName?.toLowerCase().contains(newQuery) ?? false) ||
-                  (bus.title?.toLowerCase().contains(newQuery) ?? false) ||
-                  (bus.fair?.toLowerCase().contains(newQuery) ?? false),
-            )
-            .toList() ??
-        [];
+    // suggestions = homeController.busesResponse?.buses
+    //         ?.where(
+    //           (bus) =>
+    //               (bus.name?.toLowerCase().contains(newQuery) ?? false) ||
+    //               (bus.agencyName?.toLowerCase().contains(newQuery) ?? false) ||
+    //               (bus.title?.toLowerCase().contains(newQuery) ?? false) ||
+    //               (bus.fair?.toLowerCase().contains(newQuery) ?? false),
+    //         )
+    //         .toList() ??
+    //     [];
     return suggestions.isEmpty
         ? const Center(
             child: Text(

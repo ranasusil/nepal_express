@@ -17,6 +17,7 @@ class BusController extends GetxController {
   var busNameController = TextEditingController();
   var fairController = TextEditingController();
   var yearsUsedController = TextEditingController();
+  var seatNumberController = TextEditingController();
   XFile? image;
   Uint8List? imageBytes;
   String? tripId;
@@ -236,6 +237,7 @@ void deleteBus(String busId) async {
     );
   }
 }
+
  Future<void> resetBusBookingStatus(String busId) async {
     try {
       var url = Uri.http(ipAddress, 'bus_api/resetBusBookingStatus.php');
@@ -251,6 +253,7 @@ void deleteBus(String busId) async {
           message: result['message'],
           isSuccess: true,
         );
+        update();
       } else {
         showCustomSnackBar(
           message: result['message'],
@@ -262,9 +265,39 @@ void deleteBus(String busId) async {
       );
     }
   }
+  void addSeat(String busId, String token, String seatNumber) async {
+  try {
+    var url = Uri.http(ipAddress, 'bus_api/addSeat.php');
+
+    var response = await http.post(url, body: {
+      'token': token,
+      'bus_id': busId,
+      'seatNumber': seatNumber,
+    });
+
+    var result = jsonDecode(response.body);
+
+    if (result['success']) {
+      showCustomSnackBar(
+        message: result['message'],
+        isSuccess: true,
+      );
+      // Call the getSeatsForBus method directly from the BusController
+      getSeatsForBus(busId, token);
+      seatNumberController.clear();
+    } else {
+      showCustomSnackBar(
+        message: result['message'],
+      );
+    }
+  } catch (e) {
+    showCustomSnackBar(
+      message: 'Error adding seat: $e',
+    );
+  }
+}
 
     void refreshPage() {
-    // Trigger an update to refresh the page
     update();
   }
 }
