@@ -17,40 +17,6 @@ class BusDetailController extends GetxController {
   var timeController = TextEditingController();
   var remarksController = TextEditingController();
   var formKey = GlobalKey<FormState>();
-
-
-  // final RxList<Seat> seats = <Seat>[].obs;
-
-  // Future<void> getSeatsForBus(String busId, String token) async {
-  //   try {
-  //     Uri url = Uri.http(ipAddress, 'bus_api/getSeats.php');
-  //     print('API URL: $url');
-  //     var response =
-  //         await http.post(url, body: {'token': token, 'bus_id': busId});
-  //     print('API Response: ${response.body}');
-  //     var result = SeatResponse.fromJson(jsonDecode(response.body));
-
-  //     if (result.success == true) {
-  //       seats.value = result.seats!
-  //           .map((seat) => Seat(
-  //                 seatId: seat.seatId?.toString() ?? '0',
-  //                 seatNumber: seat.seatNumber.toString(),
-  //                 availability: seat.availability?.toString() ?? '0',
-  //                 busId: seat.busId?.toString() ?? '0',
-  //               ))
-  //           .toList();
-  //     } else {
-  //       showCustomSnackBar(message: result.message ?? 'Failed to fetch seats');
-  //     }
-  //   } catch (e) {
-  //     showCustomSnackBar(message: 'Error fetching seats: $e');
-  //   }
-  // }
-
-  // // Add this method to navigate to the 'MakeSeatBookingPage'
-  // void navigateToMakeSeatBookingPage() {
-  //   Get.to(() => MakeSeatBookingPage(seats: seats));
-  // }
   final RxList<Seat> seats = <Seat>[].obs;
 
   Future<void> getSeatsForBus(String busId, String token) async {
@@ -102,7 +68,7 @@ class BusDetailController extends GetxController {
 
 Future<void> bookSeat(int? seatId) async {
   if (seatId == null) {
-    // Handle the case where seatId is null
+
     return;
   }
   

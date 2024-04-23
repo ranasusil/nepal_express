@@ -400,13 +400,6 @@ class MakeBookingPage extends StatelessWidget {
             children: [
               Expanded(
                 child: ElevatedButton(
-                  // style: ElevatedButton.styleFrom(
-                  //   backgroundColor: const Color.fromARGB(255, 65, 116, 143),
-                  //   elevation: 20,
-                  //   padding: const EdgeInsets.symmetric(
-                  //     vertical: 20,
-                  //   ),
-                  // ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 65, 116, 143),
                     elevation: 20,
@@ -444,69 +437,6 @@ class MakeBookingPage extends StatelessWidget {
   }
 }
 
-// class MakeSeatBookingPage extends StatelessWidget {
-//   final List<String> seatNumbers;
-//    final List<Seat> seats;
-//   MakeSeatBookingPage({required this.seatNumbers, required this.seats});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Seat Booking Page'),
-//       ),
-//       body: Column(
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Text(
-//               'Seats for the bus.',
-//               style: TextStyle(
-//                 fontSize: 18.0,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//             ),
-//           ),
-//           Expanded(
-//             child: GridView.builder(
-//               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//                 crossAxisCount: 4,
-//                 crossAxisSpacing: 8.0,
-//                 mainAxisSpacing: 8.0,
-//               ),
-//               itemCount: seatNumbers.length,
-//               itemBuilder: (context, index) {
-//                 Seat seat = seats[index];
-//                 Color containerColor = seat.availability == 0
-//                     ? Colors.red
-//                     : Color.fromARGB(255, 6, 170, 0);
-//                 return Padding(
-//                   padding: const EdgeInsets.all(15.0),
-//                   child: Container(
-//                     decoration: BoxDecoration(
-//                        color: seat.availability == 0 ? Colors.red : Colors.lightGreen,
-//     border: Border.all(),
-//     borderRadius: BorderRadius.circular(8.0),
-
-//                     ),
-//                     child: Center(
-//                       child: Text(
-//                         seatNumbers[index],
-//                         style: TextStyle(
-//                           color: Colors.white,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 );
-//               },
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 class MakeSeatBookingPage extends StatelessWidget {
   final List<String> seatNumbers;
   final List<Seat> seats;
@@ -571,6 +501,13 @@ class MakeSeatBookingPage extends StatelessWidget {
                                 },
                                 child: const Text("Book the seat"),
                               ),
+                            );
+                          } else {
+                            // Show a snackbar indicating that the seat is already booked or unavailable
+                            Get.snackbar(
+                              "Seat Status",
+                              "This seat is already booked or unavailable.",
+                              snackPosition: SnackPosition.TOP,
                             );
                           }
                         },
