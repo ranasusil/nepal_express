@@ -16,8 +16,9 @@ class AdminProfileController extends GetxController {
       Uri url = Uri.http(ipAddress, 'bus_api/getMyDetails.php');
 
       var response = await http.post(url, body: {"token": Memory.getToken()});
+      
 
-      // print(response.body);
+
 
       var result = userResponseFromJson(response.body);
 
